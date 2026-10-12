@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 320, "height": 380,
+  "title": {"text": "Tile grid map: share of payments still made in cash", "anchor": "start"},
+  "data": {"url": "data/payments_by_state.csv"},
+  "encoding": {
+    "x": {"field": "col", "type": "ordinal", "axis": null},
+    "y": {"field": "row", "type": "ordinal", "axis": null}
+  },
+  "layer": [
+    {"mark": {"type": "rect", "stroke": "white", "strokeWidth": 3},
+     "encoding": {
+       "color": {"field": "cash_share_pct", "type": "quantitative",
+                 "scale": {"scheme": "oranges", "domain": [0, 12]},
+                 "legend": {"title": "Cash (%)"}},
+       "tooltip": [{"field": "state", "title": "State"}, {"field": "cash_share_pct", "title": "Cash (%)"}]}},
+    {"mark": {"type": "text", "fontWeight": "bold", "dy": -6},
+     "encoding": {"text": {"field": "code"}, "color": {"value": "#222"}}},
+    {"mark": {"type": "text", "dy": 10, "fontSize": 11},
+     "encoding": {"text": {"field": "cash_share_pct"}, "color": {"value": "#222"}}}
+  ],
+  "config": {"view": {"stroke": null}, "scale": {"bandPaddingInner": 0, "bandPaddingOuter": 0}}
+}

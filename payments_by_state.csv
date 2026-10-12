@@ -1,0 +1,9 @@
+state,code,col,row,electronic_share_pct,cash_share_pct
+Western Australia,WA,0,1,95,5
+Northern Territory,NT,1,0,90,10
+South Australia,SA,1,1,94,6
+Queensland,QLD,2,0,95,5
+New South Wales,NSW,2,1,96,4
+Victoria,VIC,2,2,96,4
+Tasmania,TAS,2,3,93,7
+Australian Capital Territory,ACT,3,1,97,3

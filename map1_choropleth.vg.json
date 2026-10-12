@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container", "height": 380,
+  "title": {"text": "Choropleth: share of payments made electronically", "anchor": "start"},
+  "data": {"url": "data/states.geojson", "format": {"type": "json", "property": "features"}},
+  "transform": [{
+    "lookup": "properties.STATE_NAME",
+    "from": {"data": {"url": "data/payments_by_state.csv"}, "key": "state", "fields": ["electronic_share_pct", "code"]}
+  }],
+  "projection": {"type": "conicEqualArea", "parallels": [-18, -36], "rotate": [-134, 0]},
+  "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1},
+  "encoding": {
+    "color": {"field": "electronic_share_pct", "type": "quantitative",
+      "scale": {"scheme": "teals", "domain": [88, 98]},
+      "legend": {"title": "Electronic payments (%)", "orient": "bottom-left"}},
+    "tooltip": [{"field": "properties.STATE_NAME", "title": "State"},
+                {"field": "electronic_share_pct", "title": "Electronic (%)"}]
+  }
+}

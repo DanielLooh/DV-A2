@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container", "height": 380,
+  "title": {"text": "Proportional symbol map: mobile wallet users by capital city", "anchor": "start"},
+  "projection": {"type": "conicEqualArea", "parallels": [-18, -36], "rotate": [-134, 0]},
+  "layer": [
+    {"data": {"url": "data/states.geojson", "format": {"type": "json", "property": "features"}},
+     "mark": {"type": "geoshape", "fill": "#e9ecef", "stroke": "white"}},
+    {"data": {"url": "data/cities.csv"},
+     "mark": {"type": "circle", "color": "#d6336c", "opacity": 0.65, "stroke": "white"},
+     "encoding": {
+       "longitude": {"field": "lon", "type": "quantitative"},
+       "latitude": {"field": "lat", "type": "quantitative"},
+       "size": {"field": "wallet_users_k", "type": "quantitative",
+                "scale": {"range": [40, 2500]}, "legend": {"title": "Wallet users (thousands)", "orient": "bottom-left"}},
+       "tooltip": [{"field": "city", "title": "City"}, {"field": "wallet_users_k", "title": "Users (k)"}]}},
+    {"data": {"url": "data/cities.csv"},
+     "mark": {"type": "text", "dx": 12, "dy": -10, "align": "left", "fontSize": 11, "color": "#333"},
+     "encoding": {"longitude": {"field": "lon", "type": "quantitative"},
+                  "latitude": {"field": "lat", "type": "quantitative"},
+                  "text": {"field": "city"}}}
+  ]
+}

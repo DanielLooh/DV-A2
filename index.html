@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tap, Swipe, Done: Electronic Payments Across Australia</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1d2b36; --muted:#5b6b78; --bg:#fbfaf7; --accent:#0b7285; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.65 Inter,sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:0 20px 60px; }
+  h1 { font:600 2.6rem/1.15 Fraunces,serif; margin:48px 0 8px; }
+  h2 { font:600 1.5rem Fraunces,serif; margin:0 0 6px; }
+  .lede { color:var(--muted); font-size:1.15rem; max-width:62ch; }
+  section { margin-top:56px; } p.text { max-width:62ch; }
+  .chart { width:100%; } .row { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start; }
+  .demo { background:#fff3bf; border-left:4px solid #f08c00; padding:10px 14px; font-size:.9rem; margin-top:20px; }
+  footer { margin-top:64px; font-size:.85rem; color:var(--muted); border-top:1px solid #ddd; padding-top:16px; }
+  @media (max-width:760px){ .row{grid-template-columns:1fr;} }
+</style>
+</head>
+<body><main>
+  <h1>Tap, Swipe, Done</h1>
+  <p class="lede">Cash is fading from Australian wallets. But how evenly has the shift to cards and phones spread across the country?</p>
+  <div class="demo"><strong>Demo data:</strong> values in <code>data/*.csv</code> are placeholders. Replace them with real figures (see the sources below) before publishing.</div>
+
+  <section>
+    <h2>1. Where electronic payments dominate</h2>
+    <p class="text">Darker states make more of their payments by card, phone or online transfer. Hover over a state for its exact share.</p>
+    <div id="map1" class="chart"></div>
+  </section>
+
+  <section>
+    <h2>2. The mobile wallet hotspots</h2>
+    <p class="text">Bigger circles mean more people paying with Apple Pay, Google Pay and similar wallets. Population drives much of the pattern, so the biggest cities lead.</p>
+    <div id="map2" class="chart"></div>
+  </section>
+
+  <section>
+    <h2>3. Where cash lingers</h2>
+    <p class="text">A tile grid gives every state the same visual weight, so small jurisdictions such as the ACT and Tasmania are not lost behind large, empty land areas.</p>
+    <div id="map3" class="chart"></div>
+  </section>
+
+  <footer>
+    <p><strong>Author:</strong> YOUR NAME, FIT3179, Monash University. <strong>Date:</strong> October 2026.</p>
+    <p><strong>Sources (replace with those you use):</strong> Reserve Bank of Australia, Consumer Payments Survey and Payments Data (rba.gov.au); Australian Bureau of Statistics, state boundaries and Household Use of Information Technology (abs.gov.au); boundary GeoJSON from github.com/tonywr71/GeoJson-Data.</p>
+  </footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
+<script>
+  ["map1_choropleth","map2_symbols","map3_tilegrid"].forEach((f,i)=>
+    vegaEmbed("#map"+(i+1), "specs/"+f+".vg.json", {actions:false}));
+</script>
+</body></html>
