@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 600,
+  "height": 520,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "font": "Public Sans"
+  },
+  "projection": {
+    "type": "albers",
+    "rotate": [
+      -132,
+      0,
+      0
+    ],
+    "center": [
+      0,
+      -27
+    ],
+    "parallels": [
+      -18,
+      -36
+    ],
+    "scale": 860,
+    "translate": [
+      300.0,
+      255.0
+    ]
+  },
+  "params": [
+    {
+      "name": "year",
+      "value": 2026,
+      "bind": {
+        "input": "radio",
+        "options": [
+          2017,
+          2026
+        ],
+        "name": "Year: "
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "url": "data/au_states.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#E4EAEF",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "data": {
+        "url": "data/branch_dots.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.year == year"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "fill": "#12263A",
+        "fillOpacity": 0.55,
+        "stroke": "#ffffff",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "branches",
+          "type": "quantitative",
+          "title": "Branches in the area",
+          "scale": {
+            "type": "sqrt",
+            "domain": [
+              1,
+              150
+            ],
+            "range": [
+              8,
+              650
+            ]
+          },
+          "legend": {
+            "orient": "bottom-left",
+            "values": [
+              1,
+              10,
+              50,
+              150
+            ],
+            "rowPadding": 6,
+            "titlePadding": 8
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "branches",
+            "type": "quantitative",
+            "title": "Branches in this area",
+            "format": ","
+          }
+        ]
+      }
+    }
+  ]
+}
