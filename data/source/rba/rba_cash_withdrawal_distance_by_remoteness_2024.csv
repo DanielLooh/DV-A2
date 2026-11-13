@@ -1,0 +1,6 @@
+remoteness,distance_km_95pct_to_nearest_cash_withdrawal_point,value_type,period,source_id,notes
+Major cities,1.6,exact,June 2024,S3,"95% of residents live within this straight-line distance; includes ADI branches/ATMs, Bank@Post, ABA fee-free ATMs, independent ATMs and major retailer cash-out"
+Inner regional,8.0,approx,June 2024,S3,"95% of residents live within this straight-line distance; includes ADI branches/ATMs, Bank@Post, ABA fee-free ATMs, independent ATMs and major retailer cash-out"
+Outer regional,16.0,approx,June 2024,S3,"95% of residents live within this straight-line distance; includes ADI branches/ATMs, Bank@Post, ABA fee-free ATMs, independent ATMs and major retailer cash-out"
+Remote,32.0,approx,June 2024,S3,"95% of residents live within this straight-line distance; includes ADI branches/ATMs, Bank@Post, ABA fee-free ATMs, independent ATMs and major retailer cash-out"
+Very remote,95.0,approx,June 2024,S3,"95% of residents live within this straight-line distance; includes ADI branches/ATMs, Bank@Post, ABA fee-free ATMs, independent ATMs and major retailer cash-out"

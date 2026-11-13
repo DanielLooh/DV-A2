@@ -1,0 +1,311 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Instant transfers are growing fastest — cheques are collapsing",
+    "subtitle": "Year-ended growth to September 2026, by payment system.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 560,
+  "height": 240,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 12
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/source/rba/rps_growth_sep2026.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.unit == '$ billion'"
+    },
+    {
+      "fold": [
+        "year_ended_growth_pct_sep2025",
+        "year_ended_growth_pct_sep2026"
+      ],
+      "as": [
+        "period_key",
+        "growth"
+      ]
+    },
+    {
+      "calculate": "datum.period_key == 'year_ended_growth_pct_sep2025' ? 'Year to Sep 2025' : 'Year to Sep 2026'",
+      "as": "period"
+    },
+    {
+      "calculate": "datum.series == 'NPP transactions' ? 'Instant bank transfers (NPP)' : datum.series == 'Card purchases on Australian-issued cards' ? 'Card purchases' : datum.series == 'ATM withdrawals' ? 'ATM withdrawals' : 'Cheques'",
+      "as": "rail"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "rail",
+      "type": "nominal",
+      "title": null,
+      "scale": {
+        "domain": [
+          "Cheques",
+          "ATM withdrawals",
+          "Card purchases",
+          "Instant bank transfers (NPP)"
+        ]
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "stroke": "#ffffff",
+        "strokeWidth": 1,
+        "height": 15
+      },
+      "encoding": {
+        "x": {
+          "field": "growth",
+          "type": "quantitative",
+          "title": "Year-ended growth (%)",
+          "scale": {
+            "domain": [
+              -40,
+              32
+            ]
+          },
+          "axis": {
+            "grid": true,
+            "format": "+d",
+            "values": [
+              -40,
+              -30,
+              -20,
+              -10,
+              0,
+              10,
+              20,
+              30
+            ]
+          }
+        },
+        "color": {
+          "field": "period",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Year to Sep 2025",
+              "Year to Sep 2026"
+            ],
+            "range": [
+              "#5a9ded",
+              "#14548f"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "rail",
+            "type": "nominal",
+            "title": "Payment system"
+          },
+          {
+            "field": "period",
+            "type": "nominal",
+            "title": "Period"
+          },
+          {
+            "field": "growth",
+            "type": "quantitative",
+            "title": "Year-ended growth",
+            "format": "+.1f"
+          },
+          {
+            "field": "level_sep2026",
+            "type": "quantitative",
+            "title": "Monthly level, Sep 2026 ($ billion)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.period_key == 'year_ended_growth_pct_sep2026'"
+        },
+        {
+          "calculate": "format(datum.growth, '+.1f') + '%'",
+          "as": "growth_label"
+        },
+        {
+          "filter": "!(datum.growth < 0)"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#14548f",
+        "align": "left",
+        "dx": 6
+      },
+      "encoding": {
+        "x": {
+          "field": "growth",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -40,
+              32
+            ]
+          }
+        },
+        "text": {
+          "field": "growth_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.period_key == 'year_ended_growth_pct_sep2026'"
+        },
+        {
+          "calculate": "format(datum.growth, '+.1f') + '%'",
+          "as": "growth_label"
+        },
+        {
+          "filter": "(datum.growth < 0)"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#14548f",
+        "align": "right",
+        "dx": -6
+      },
+      "encoding": {
+        "x": {
+          "field": "growth",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -40,
+              32
+            ]
+          }
+        },
+        "text": {
+          "field": "growth_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#9aa8b5",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -40,
+              32
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "rail": "Cheques",
+            "x": 0,
+            "label": "Cheque use fell by a quarter in a single year"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "color": "#4C6074",
+        "align": "left",
+        "dx": 10
+      },
+      "encoding": {
+        "y": {
+          "field": "rail",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Cheques",
+              "ATM withdrawals",
+              "Card purchases",
+              "Instant bank transfers (NPP)"
+            ]
+          }
+        },
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -40,
+              32
+            ]
+          }
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

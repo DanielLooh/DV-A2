@@ -1,0 +1,355 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Cash has retreated fastest from transport and food shopping",
+    "subtitle": [
+      "Bars compare 2007 and 2025; no intermediate years are shown.",
+      "Tilde (~) marks approximate figures. Missing values are labelled."
+    ],
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD"
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "vconcat": [
+    {
+      "title": {
+        "text": "By purpose of the purchase",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700
+      },
+      "data": {
+        "url": "data/source/rba/cash_use_2025.csv",
+        "format": {
+          "parse": {
+            "year": "number",
+            "value_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.measure == 'cash_share_in_person_by_purpose' && (datum.year == 2007 || datum.year == 2025)"
+        },
+        {
+          "calculate": "datum.value_type == 'approx' ? '~' + format(datum.value_pct, 'd') + '%' : format(datum.value_pct, 'd') + '%'",
+          "as": "value_label"
+        }
+      ],
+      "width": 480,
+      "height": 260,
+      "encoding": {
+        "y": {
+          "field": "group",
+          "type": "nominal",
+          "sort": [
+            "Transport",
+            "Food retail",
+            "Leisure",
+            "Groceries and fuel"
+          ],
+          "title": null,
+          "axis": {
+            "labelLimit": 150,
+            "labelFontSize": 12
+          }
+        },
+        "yOffset": {
+          "field": "year",
+          "type": "ordinal",
+          "scale": {
+            "domain": [
+              2007,
+              2025
+            ]
+          }
+        },
+        "x": {
+          "field": "value_pct",
+          "type": "quantitative",
+          "title": "Cash share (%)",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ]
+          },
+          "axis": {
+            "values": [
+              0,
+              20,
+              40,
+              60,
+              80,
+              100
+            ],
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "cornerRadiusEnd": 2
+          },
+          "encoding": {
+            "color": {
+              "field": "year",
+              "type": "ordinal",
+              "title": "Survey year",
+              "scale": {
+                "domain": [
+                  2007,
+                  2025
+                ],
+                "range": [
+                  "#4C6074",
+                  "#9C1043"
+                ]
+              },
+              "legend": {
+                "orient": "top",
+                "direction": "horizontal"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "group",
+                "type": "nominal",
+                "title": "Measure"
+              },
+              {
+                "field": "year",
+                "type": "ordinal",
+                "title": "Survey year"
+              },
+              {
+                "field": "value_label",
+                "type": "nominal",
+                "title": "Cash share"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 5,
+            "fontSize": 12,
+            "color": "#12263A"
+          },
+          "encoding": {
+            "text": {
+              "field": "value_label"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "group": "Leisure",
+                "year": 2007,
+                "value_pct": 0,
+                "label": "2007 not available"
+              },
+              {
+                "group": "Groceries and fuel",
+                "year": 2007,
+                "value_pct": 0,
+                "label": "2007 not available"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 5,
+            "fontSize": 11,
+            "fontStyle": "italic",
+            "color": "#4C6074"
+          },
+          "encoding": {
+            "text": {
+              "field": "label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "All payments: by count and by value",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700
+      },
+      "data": {
+        "url": "data/source/rba/cash_use_2025.csv",
+        "format": {
+          "parse": {
+            "year": "number",
+            "value_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "(datum.measure == 'cash_share_of_payments_by_number' || datum.measure == 'cash_share_of_payments_by_value') && (datum.year == 2007 || datum.year == 2025)"
+        },
+        {
+          "calculate": "datum.measure == 'cash_share_of_payments_by_number' ? 'By number' : 'By value'",
+          "as": "series_label"
+        },
+        {
+          "calculate": "datum.value_type == 'approx' ? '~' + format(datum.value_pct, 'd') + '%' : format(datum.value_pct, 'd') + '%'",
+          "as": "value_label"
+        }
+      ],
+      "width": 480,
+      "height": 140,
+      "encoding": {
+        "y": {
+          "field": "series_label",
+          "type": "nominal",
+          "sort": [
+            "By number",
+            "By value"
+          ],
+          "title": null,
+          "axis": {
+            "labelLimit": 150,
+            "labelFontSize": 12
+          }
+        },
+        "yOffset": {
+          "field": "year",
+          "type": "ordinal",
+          "scale": {
+            "domain": [
+              2007,
+              2025
+            ]
+          }
+        },
+        "x": {
+          "field": "value_pct",
+          "type": "quantitative",
+          "title": "Cash share (%)",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ]
+          },
+          "axis": {
+            "values": [
+              0,
+              20,
+              40,
+              60,
+              80,
+              100
+            ],
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "cornerRadiusEnd": 2
+          },
+          "encoding": {
+            "color": {
+              "field": "year",
+              "type": "ordinal",
+              "title": "Survey year",
+              "scale": {
+                "domain": [
+                  2007,
+                  2025
+                ],
+                "range": [
+                  "#4C6074",
+                  "#9C1043"
+                ]
+              },
+              "legend": {
+                "orient": "top",
+                "direction": "horizontal"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "series_label",
+                "type": "nominal",
+                "title": "Measure"
+              },
+              {
+                "field": "year",
+                "type": "ordinal",
+                "title": "Survey year"
+              },
+              {
+                "field": "value_label",
+                "type": "nominal",
+                "title": "Cash share"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 5,
+            "fontSize": 12,
+            "color": "#12263A"
+          },
+          "encoding": {
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "spacing": 28
+}

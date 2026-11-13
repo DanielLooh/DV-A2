@@ -1,0 +1,12 @@
+date,date_precision,category,event,status,source_note,source_id
+2018-01-01,year,Payments,NPP and PayID introduced,past,RBA CPS bulletin (PayID introduced 2018 as part of NPP),S1
+2024-10-01,month,Data,RBA begins publishing contactless card and mobile wallet series,past,S4,S4
+2025-06-10,day,Credit regulation,BNPL providers must hold a credit licence (or valid application),past,ASIC INFO 285; checked 13 November 2026,S14
+2025-07-01,month,Fraud protection,Confirmation of Payee name-checking starts rolling out at participating banks,past,S1,S1
+2026-01-01,day,Cash,Grocery stores and petrol stations must accept cash (small business exemptions),past,S2,S2
+2026-10-01,day,Card fees,"Card surcharges removed on eftpos, Mastercard and Visa; domestic interchange caps cut",past,S11,S11
+2027-01-30,day,Card fees,Large acquirers publish how fee cuts flowed through to merchant fees,upcoming,RBA FAQ staged implementation dates; checked 13 November 2026,S11
+2027-04-01,day,Card fees,Interchange caps introduced on foreign-issued cards acquired in Australia,upcoming,S11,S11
+2027-06-30,approx,Banking access,Major banks' regional branch closure moratorium runs until at least mid-2027,upcoming,S2 (until at least mid-2027),S2
+2028-06-30,day,Cheques,Financial institutions stop issuing cheques,upcoming,S8,S8
+2029-09-30,day,Cheques,Cheques no longer accepted,upcoming,S8,S8

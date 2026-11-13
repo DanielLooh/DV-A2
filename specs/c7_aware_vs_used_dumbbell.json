@@ -1,0 +1,438 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Newer payment methods: many have heard of them, few use them",
+    "subtitle": "Share of surveyed consumers, 2025. Open circles mean “under” the value shown.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 560,
+  "height": 260,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 12
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/source/rba/cps_alternative_methods.csv",
+    "format": {
+      "parse": {
+        "year": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.year == 2025 && (datum.measure == 'aware' || datum.measure == 'used_past_12m') && datum.method != 'PayID (age 18-29)'"
+    },
+    {
+      "calculate": "datum.measure == 'aware' ? 'Aware of it' : 'Used it in the past 12 months'",
+      "as": "measure_label"
+    },
+    {
+      "calculate": "datum.value_type == 'upper_bound' ? 'under ' + format(datum.share_of_respondents_pct, 'd') + '%' : datum.value_type == 'lower_bound' ? 'over ' + format(datum.share_of_respondents_pct, 'd') + '%' : datum.value_type == 'approx' ? 'about ' + format(datum.share_of_respondents_pct, 'd') + '%' : format(datum.share_of_respondents_pct, 'd') + '%'",
+      "as": "value_label"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "method",
+      "type": "nominal",
+      "title": null,
+      "scale": {
+        "domain": [
+          "PayID",
+          "QR code",
+          "PayTo",
+          "Alipay/WeChat Pay",
+          "Cryptocurrency"
+        ]
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "grid": true
+      }
+    }
+  },
+  "layer": [
+    {
+      "transform": [
+        {
+          "pivot": "measure",
+          "value": "share_of_respondents_pct",
+          "groupby": [
+            "method"
+          ],
+          "limit": 20
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "#C9D4DD",
+        "size": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "aware",
+          "type": "quantitative",
+          "title": "Share of consumers (%)"
+        },
+        "x2": {
+          "field": "used_past_12m"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.value_type != 'upper_bound'"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 130,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_respondents_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          },
+          "axis": {
+            "grid": true
+          }
+        },
+        "color": {
+          "field": "measure_label",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Aware of it",
+              "Used it in the past 12 months"
+            ],
+            "range": [
+              "#3D7BC4",
+              "#B01250"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "title": null,
+            "symbolSize": 130
+          }
+        },
+        "tooltip": [
+          {
+            "field": "method",
+            "type": "nominal",
+            "title": "Method"
+          },
+          {
+            "field": "measure_label",
+            "type": "nominal",
+            "title": "Question"
+          },
+          {
+            "field": "value_label",
+            "type": "nominal",
+            "title": "Share of consumers"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.value_type == 'upper_bound'"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": false,
+        "size": 130,
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_respondents_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          }
+        },
+        "color": {
+          "field": "measure_label",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Aware of it",
+              "Used it in the past 12 months"
+            ],
+            "range": [
+              "#3D7BC4",
+              "#B01250"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "title": null,
+            "symbolSize": 130
+          }
+        },
+        "tooltip": [
+          {
+            "field": "method",
+            "type": "nominal",
+            "title": "Method"
+          },
+          {
+            "field": "measure_label",
+            "type": "nominal",
+            "title": "Question"
+          },
+          {
+            "field": "value_label",
+            "type": "nominal",
+            "title": "Share of consumers"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.measure_label == 'Aware of it' ? (datum.share_of_respondents_pct < 25 ? 'r' : 'l') : 'r'",
+          "as": "label_side"
+        },
+        {
+          "filter": "!(datum.label_side == 'l') && !(datum.measure_label == 'Aware of it')"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#12263A",
+        "align": "left",
+        "dx": 10,
+        "dy": 18
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_respondents_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          }
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.measure_label == 'Aware of it' ? (datum.share_of_respondents_pct < 25 ? 'r' : 'l') : 'r'",
+          "as": "label_side"
+        },
+        {
+          "filter": "(datum.label_side == 'l') && !(datum.measure_label == 'Aware of it')"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#12263A",
+        "align": "right",
+        "dx": -10,
+        "dy": 18
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_respondents_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          }
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.measure_label == 'Aware of it' ? (datum.share_of_respondents_pct < 25 ? 'r' : 'l') : 'r'",
+          "as": "label_side"
+        },
+        {
+          "filter": "!(datum.label_side == 'l') && (datum.measure_label == 'Aware of it')"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#12263A",
+        "align": "left",
+        "dx": 10,
+        "dy": -16
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_respondents_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          }
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.measure_label == 'Aware of it' ? (datum.share_of_respondents_pct < 25 ? 'r' : 'l') : 'r'",
+          "as": "label_side"
+        },
+        {
+          "filter": "(datum.label_side == 'l') && (datum.measure_label == 'Aware of it')"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#12263A",
+        "align": "right",
+        "dx": -10,
+        "dy": -16
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_respondents_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          }
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "method": "QR code",
+            "x": 16,
+            "label": "No published awareness figure for QR codes"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "color": "#4C6074",
+        "align": "left",
+        "baseline": "middle"
+      },
+      "encoding": {
+        "y": {
+          "field": "method",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "PayID",
+              "QR code",
+              "PayTo",
+              "Alipay/WeChat Pay",
+              "Cryptocurrency"
+            ]
+          }
+        },
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              90
+            ]
+          }
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

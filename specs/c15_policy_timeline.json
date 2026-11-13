@@ -1,0 +1,224 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Payment milestones: changes already made and deadlines ahead",
+    "subtitle": "Snapshot at 13 November 2026. Blue: past milestones; magenta: scheduled.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 480,
+  "height": 320,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 11
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/derived/policy_timeline_checked.csv"
+  },
+  "transform": [
+    {
+      "calculate": "{'NPP and PayID introduced': 'NPP and PayID introduced', 'RBA begins publishing contactless card and mobile wallet series': 'RBA publishes contactless & mobile wallet data', 'BNPL providers must hold a credit licence (or valid application)': 'BNPL providers must hold a credit licence', 'Confirmation of Payee name-checking starts rolling out at participating banks': 'Confirmation of Payee name-checking rolls out', 'Grocery stores and petrol stations must accept cash (small business exemptions)': 'Grocery stores and petrol stations must accept cash', 'Card surcharges removed on eftpos, Mastercard and Visa; domestic interchange caps cut': 'Card surcharges removed (eftpos, Mastercard, Visa)', 'Large acquirers publish how fee cuts flowed through to merchant fees': 'Large acquirers publish fee-cut pass-through data', 'Interchange caps introduced on foreign-issued cards acquired in Australia': 'Interchange caps on foreign-issued cards', \"Major banks' regional branch closure moratorium runs until at least mid-2027\": 'Regional branch closure moratorium to mid-2027', 'Financial institutions stop issuing cheques': 'Financial institutions stop issuing cheques', 'Cheques no longer accepted': 'Cheques no longer accepted'}[datum.event]",
+      "as": "event_short"
+    },
+    {
+      "calculate": "year(datum.date) + (month(datum.date) + (date(datum.date) - 1) / 31) / 12",
+      "as": "t"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "event_short",
+      "type": "nominal",
+      "title": null,
+      "sort": {
+        "field": "t",
+        "op": "min"
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelFontSize": 11,
+        "labelLimit": 300
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 130,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "t",
+          "type": "quantitative",
+          "title": null,
+          "scale": {
+            "domain": [
+              2017.5,
+              2030
+            ]
+          },
+          "axis": {
+            "grid": true,
+            "format": "d",
+            "values": [
+              2018,
+              2020,
+              2022,
+              2024,
+              2026,
+              2028,
+              2030
+            ],
+            "labelFontSize": 11,
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "color": {
+          "field": "status",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "past",
+              "upcoming"
+            ],
+            "range": [
+              "#1c5cab",
+              "#9C1043"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "symbolSize": 90,
+            "labelExpr": "datum.value == 'past' ? 'Already in force' : 'Still to come'"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "event",
+            "type": "nominal",
+            "title": "Milestone"
+          },
+          {
+            "field": "date",
+            "type": "temporal",
+            "title": "Date"
+          },
+          {
+            "field": "category",
+            "type": "nominal",
+            "title": "Area"
+          },
+          {
+            "field": "status",
+            "type": "nominal",
+            "title": "Status"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "t": 2026.87,
+            "event_short": "NPP and PayID introduced",
+            "label": "13 Nov 2026"
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#9aa8b5",
+        "strokeWidth": 1,
+        "strokeDash": [
+          4,
+          3
+        ]
+      },
+      "encoding": {
+        "x": {
+          "field": "t",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              2017.5,
+              2030
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "t": 2026.87,
+            "event_short": "NPP and PayID introduced",
+            "label": "13 Nov 2026"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#4C6074",
+        "align": "left",
+        "dx": 6,
+        "dy": -12
+      },
+      "encoding": {
+        "x": {
+          "field": "t",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              2017.5,
+              2030
+            ]
+          }
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

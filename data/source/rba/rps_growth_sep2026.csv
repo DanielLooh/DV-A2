@@ -1,0 +1,7 @@
+series,unit,level_sep2026,year_ended_growth_pct_sep2025,year_ended_growth_pct_sep2026,monthly_growth_pct_sep2026,source_id,notes
+Card purchases on Australian-issued cards,$ billion,100.8,8.4,5.7,-1.0,S5,RBA Retail Payments September 2026 summary tables. Verify column mapping against the RBA release before publishing.
+ATM withdrawals,$ billion,9.2,2.4,0.3,-1.4,S5,RBA Retail Payments September 2026 summary tables. Verify column mapping against the RBA release before publishing.
+NPP transactions,$ billion,276.3,25.1,28.8,4.4,S5,RBA Retail Payments September 2026 summary tables. Verify column mapping against the RBA release before publishing.
+NPP transactions,million,182.7,10.0,16.9,2.6,S5,RBA Retail Payments September 2026 summary tables. Verify column mapping against the RBA release before publishing.
+Cheque payments,$ billion,10.1,-12.8,-25.6,-6.0,S5,RBA Retail Payments September 2026 summary tables. Verify column mapping against the RBA release before publishing.
+Cheque payments,million,0.6,-24.4,-32.5,-2.0,S5,RBA Retail Payments September 2026 summary tables. Verify column mapping against the RBA release before publishing.

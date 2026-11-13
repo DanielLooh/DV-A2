@@ -1,0 +1,298 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "State profiles: digital readiness versus shrinking local access",
+    "subtitle": "Each axis scaled independently; top = highest score or smallest service decline.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 600,
+  "height": 300,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A"
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A"
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/derived/state_profile_adii_apra.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "adii_index",
+        "access",
+        "affordability",
+        "digital_ability",
+        "branch_loss_pct",
+        "bank_post_change_pct_2017_2026",
+        "adi_atm_change_pct_2017_2026",
+        "other_face_to_face_change_pct_2017_2026"
+      ],
+      "as": [
+        "axis_key",
+        "raw_value"
+      ]
+    },
+    {
+      "calculate": "{'adii_index': 'ADII score', 'access': 'Access', 'affordability': 'Affordability', 'digital_ability': 'Digital ability', 'branch_loss_pct': 'Branch closures', 'bank_post_change_pct_2017_2026': 'Bank@Post', 'adi_atm_change_pct_2017_2026': 'ADI ATMs', 'other_face_to_face_change_pct_2017_2026': 'Other in-person'}[datum.axis_key]",
+      "as": "axis_name"
+    },
+    {
+      "calculate": "datum.axis_key == 'branch_loss_pct' ? -datum.raw_value : datum.raw_value",
+      "as": "value_adj"
+    },
+    {
+      "calculate": "datum.axis_key == 'adii_index' || datum.axis_key == 'access' || datum.axis_key == 'affordability' || datum.axis_key == 'digital_ability' ? format(datum.value_adj, '.1f') : format(datum.value_adj, '+.1f') + '%'",
+      "as": "value_label"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "min",
+          "field": "value_adj",
+          "as": "axis_min"
+        },
+        {
+          "op": "max",
+          "field": "value_adj",
+          "as": "axis_max"
+        }
+      ],
+      "groupby": [
+        "axis_name"
+      ]
+    },
+    {
+      "calculate": "(datum.value_adj - datum.axis_min) / (datum.axis_max - datum.axis_min)",
+      "as": "norm"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "axis_name",
+      "type": "nominal",
+      "title": null,
+      "scale": {
+        "domain": [
+          "ADII score",
+          "Access",
+          "Affordability",
+          "Digital ability",
+          "Branch closures",
+          "Bank@Post",
+          "ADI ATMs",
+          "Other in-person"
+        ]
+      },
+      "axis": {
+        "labelAngle": 40,
+        "labelFontSize": 11,
+        "domain": false,
+        "ticks": false
+      }
+    }
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "hoverLine",
+          "select": {
+            "type": "point",
+            "fields": [
+              "state"
+            ],
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        },
+        {
+          "name": "hoverLegend",
+          "select": {
+            "type": "point",
+            "fields": [
+              "state_name"
+            ]
+          },
+          "bind": "legend"
+        }
+      ],
+      "mark": {
+        "type": "line"
+      },
+      "encoding": {
+        "opacity": {
+          "condition": [
+            {
+              "test": {
+                "and": [
+                  {
+                    "param": "hoverLine"
+                  },
+                  {
+                    "param": "hoverLegend"
+                  }
+                ]
+              },
+              "value": 1
+            }
+          ],
+          "value": 0.45
+        },
+        "strokeWidth": {
+          "condition": [
+            {
+              "test": {
+                "and": [
+                  {
+                    "param": "hoverLine"
+                  },
+                  {
+                    "param": "hoverLegend"
+                  }
+                ]
+              },
+              "value": 3.5
+            }
+          ],
+          "value": 1.5
+        },
+        "y": {
+          "field": "norm",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -0.14,
+              1.14
+            ]
+          },
+          "axis": null
+        },
+        "color": {
+          "field": "state_name",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Australian Capital Territory",
+              "New South Wales",
+              "Northern Territory",
+              "Queensland",
+              "South Australia",
+              "Tasmania",
+              "Victoria",
+              "Western Australia"
+            ],
+            "range": [
+              "#6250d6",
+              "#2a78d6",
+              "#eb6834",
+              "#1baf7a",
+              "#eda100",
+              "#e34948",
+              "#e87ba4",
+              "#008300"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "columns": 1,
+            "symbolSize": 60
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state_name",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "axis_name",
+            "type": "nominal",
+            "title": "Axis"
+          },
+          {
+            "field": "value_label",
+            "type": "nominal",
+            "title": "Value (top = best)"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.value_adj == datum.axis_max"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#4C6074",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -3
+      },
+      "encoding": {
+        "y": {
+          "datum": 1.03,
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.value_adj == datum.axis_min"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#4C6074",
+        "align": "center",
+        "baseline": "top",
+        "dy": 3
+      },
+      "encoding": {
+        "y": {
+          "datum": -0.03,
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

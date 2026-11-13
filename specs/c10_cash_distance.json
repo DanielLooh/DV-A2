@@ -1,0 +1,347 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Cash withdrawal points are much farther away in remote areas",
+    "subtitle": "Straight-line distances, not road journeys. June 2024.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 12
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "vconcat": [
+    {
+      "title": {
+        "text": "Distance to the nearest way to withdraw cash, by remoteness",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#12263A"
+      },
+      "data": {
+        "url": "data/source/rba/rba_cash_withdrawal_distance_by_remoteness_2024.csv"
+      },
+      "transform": [
+        {
+          "calculate": "datum.value_type == 'approx' ? '~' + format(datum.distance_km_95pct_to_nearest_cash_withdrawal_point, '.1f') + ' km' : format(datum.distance_km_95pct_to_nearest_cash_withdrawal_point, '.1f') + ' km'",
+          "as": "dist_label"
+        }
+      ],
+      "width": 500,
+      "height": 170,
+      "encoding": {
+        "y": {
+          "field": "remoteness",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Very remote",
+              "Remote",
+              "Outer regional",
+              "Inner regional",
+              "Major cities"
+            ]
+          },
+          "axis": {
+            "domain": false,
+            "ticks": false
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "color": "#1c5cab",
+            "size": 2
+          },
+          "encoding": {
+            "x": {
+              "field": "distance_km_95pct_to_nearest_cash_withdrawal_point",
+              "type": "quantitative",
+              "title": "Kilometres (log scale)",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  1,
+                  130
+                ]
+              },
+              "axis": {
+                "values": [
+                  1,
+                  10,
+                  100
+                ],
+                "grid": true,
+                "format": "d"
+              }
+            },
+            "x2": {
+              "value": 1
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 110,
+            "color": "#1c5cab",
+            "stroke": "#ffffff",
+            "strokeWidth": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "distance_km_95pct_to_nearest_cash_withdrawal_point",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  1,
+                  130
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "remoteness",
+                "type": "nominal",
+                "title": "Remoteness"
+              },
+              {
+                "field": "dist_label",
+                "type": "nominal",
+                "title": "95% of residents live within"
+              },
+              {
+                "field": "period",
+                "type": "nominal",
+                "title": "Period"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "left",
+            "dx": 10
+          },
+          "encoding": {
+            "x": {
+              "field": "distance_km_95pct_to_nearest_cash_withdrawal_point",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  1,
+                  130
+                ]
+              }
+            },
+            "text": {
+              "field": "dist_label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "By type of cash service: the range from 95% to 99% of residents",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#12263A"
+      },
+      "data": {
+        "url": "data/source/rba/rba_cash_access_points_june2024.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.access_point_type != 'ADI withdrawal (branches, ATMs, ABA fee-free)'"
+        },
+        {
+          "calculate": "{'ADI branches': 'Bank branches (ADI)', 'ADI ATMs': 'Bank ATMs (ADI)', 'Bank@Post outlets': 'Bank@Post outlets', 'Independent ATMs': 'Independent ATMs', 'All ATMs': 'All ATMs', 'Major retailer cash-out': 'Retailer cash-out', 'ADI deposit services (branches + Bank@Post)': 'Deposit services', 'All withdrawal services': 'All withdrawal services'}[datum.access_point_type]",
+          "as": "service"
+        },
+        {
+          "calculate": "datum.service == 'Bank@Post outlets'",
+          "as": "is_bankpost"
+        }
+      ],
+      "width": 500,
+      "height": 240,
+      "encoding": {
+        "y": {
+          "field": "service",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Retailer cash-out",
+              "Bank ATMs (ADI)",
+              "Bank branches (ADI)",
+              "Independent ATMs",
+              "Bank@Post outlets",
+              "Deposit services",
+              "All ATMs",
+              "All withdrawal services"
+            ]
+          },
+          "axis": {
+            "domain": false,
+            "ticks": false
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "size": 7
+          },
+          "encoding": {
+            "x": {
+              "field": "distance_km_95pct",
+              "type": "quantitative",
+              "title": "Kilometres (log scale)",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  1,
+                  130
+                ]
+              },
+              "axis": {
+                "values": [
+                  1,
+                  10,
+                  100
+                ],
+                "grid": true,
+                "format": "d"
+              }
+            },
+            "x2": {
+              "field": "distance_km_99pct"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.is_bankpost",
+                "value": "#B01250"
+              },
+              "value": "#1c5cab"
+            },
+            "tooltip": [
+              {
+                "field": "service",
+                "type": "nominal",
+                "title": "Service"
+              },
+              {
+                "field": "distance_km_95pct",
+                "type": "quantitative",
+                "title": "95% of residents within (km)",
+                "format": ".1f"
+              },
+              {
+                "field": "distance_km_99pct",
+                "type": "quantitative",
+                "title": "99% within (km)",
+                "format": ".1f"
+              },
+              {
+                "field": "number_june_2024",
+                "type": "quantitative",
+                "title": "Number of outlets, June 2024",
+                "format": ",.0f"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "service": "All withdrawal services",
+                "x": 4,
+                "label": "Post offices keep most people within 4 km of cash"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 12,
+            "color": "#4C6074",
+            "align": "left",
+            "dx": 10,
+            "dy": -14
+          },
+          "encoding": {
+            "y": {
+              "field": "service",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Retailer cash-out",
+                  "Bank ATMs (ADI)",
+                  "Bank branches (ADI)",
+                  "Independent ATMs",
+                  "Bank@Post outlets",
+                  "Deposit services",
+                  "All ATMs",
+                  "All withdrawal services"
+                ]
+              }
+            },
+            "x": {
+              "field": "x",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  1,
+                  130
+                ]
+              }
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

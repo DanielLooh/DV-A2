@@ -1,0 +1,11 @@
+dimension,group,measure,value_pct,value_type,year,source_id,notes
+age,18-29,card_share_of_payments,80,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+age,65+,card_share_of_payments,60,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q1 (lowest),card_share_of_payments,60,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q4 (highest),card_share_of_payments,80,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q1 (lowest),debit_card_share,53,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q4 (highest),debit_card_share,44,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q1 (lowest),credit_card_share,8,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q4 (highest),credit_card_share,33,lower_bound,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q1 (lowest),holds_rewards_credit_card_among_credit_card_holders,43,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.
+income_quartile,Q4 (highest),holds_rewards_credit_card_among_credit_card_holders,80,approx,2025,S1,Income quartiles are age-adjusted by RBA. Only values stated in text; chart values for other groups are not published as text.

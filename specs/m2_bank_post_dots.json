@@ -1,0 +1,318 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Where post offices provide in-person banking",
+    "subtitle": [
+      "Bank@Post locations, June 2026. One equal-sized dot = one location.",
+      "3,299 locations across the eight states and territories."
+    ],
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "spacing": 18,
+  "vconcat": [
+    {
+      "width": 600,
+      "height": 520,
+      "projection": {
+        "type": "albers",
+        "rotate": [
+          -132,
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -27
+        ],
+        "parallels": [
+          -18,
+          -36
+        ],
+        "scale": 860,
+        "translate": [
+          300.0,
+          255.0
+        ]
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "data/geography/au_states.topojson",
+            "format": {
+              "type": "topojson",
+              "feature": "states"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "#E4EAEF",
+            "stroke": "#FFFFFF",
+            "strokeWidth": 0.8,
+            "clip": true
+          }
+        },
+        {
+          "data": {
+            "url": "data/derived/bank_post_locations_2026.csv",
+            "format": {
+              "parse": {
+                "lat": "number",
+                "lon": "number"
+              }
+            }
+          },
+          "mark": {
+            "type": "circle",
+            "size": 12,
+            "color": "#9C1043",
+            "opacity": 0.7,
+            "clip": true
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "tooltip": [
+              {
+                "field": "state",
+                "type": "nominal",
+                "title": "State / territory"
+              },
+              {
+                "field": "remoteness",
+                "type": "nominal",
+                "title": "Remoteness"
+              },
+              {
+                "field": "lat",
+                "type": "quantitative",
+                "title": "Latitude",
+                "format": ".3f"
+              },
+              {
+                "field": "lon",
+                "type": "quantitative",
+                "title": "Longitude",
+                "format": ".3f"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "spacing": 20,
+      "hconcat": [
+        {
+          "title": {
+            "text": "Sydney region \u2014 enlarged",
+            "anchor": "start",
+            "fontSize": 12
+          },
+          "width": 290,
+          "height": 170,
+          "projection": {
+            "type": "mercator",
+            "center": [
+              151.0,
+              -33.85
+            ],
+            "scale": 14000,
+            "translate": [
+              145,
+              85
+            ]
+          },
+          "layer": [
+            {
+              "data": {
+                "url": "data/geography/au_states.topojson",
+                "format": {
+                  "type": "topojson",
+                  "feature": "states"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "fill": "#E4EAEF",
+                "stroke": "#FFFFFF",
+                "strokeWidth": 0.8,
+                "clip": true
+              }
+            },
+            {
+              "data": {
+                "url": "data/derived/bank_post_locations_2026.csv",
+                "format": {
+                  "parse": {
+                    "lat": "number",
+                    "lon": "number"
+                  }
+                }
+              },
+              "mark": {
+                "type": "circle",
+                "size": 24,
+                "color": "#9C1043",
+                "opacity": 0.7,
+                "clip": true
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "lon",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "lat",
+                  "type": "quantitative"
+                },
+                "tooltip": [
+                  {
+                    "field": "state",
+                    "type": "nominal",
+                    "title": "State / territory"
+                  },
+                  {
+                    "field": "remoteness",
+                    "type": "nominal",
+                    "title": "Remoteness"
+                  },
+                  {
+                    "field": "lat",
+                    "type": "quantitative",
+                    "title": "Latitude",
+                    "format": ".3f"
+                  },
+                  {
+                    "field": "lon",
+                    "type": "quantitative",
+                    "title": "Longitude",
+                    "format": ".3f"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": {
+            "text": "Melbourne region \u2014 enlarged",
+            "anchor": "start",
+            "fontSize": 12
+          },
+          "width": 290,
+          "height": 170,
+          "projection": {
+            "type": "mercator",
+            "center": [
+              145.0,
+              -37.8
+            ],
+            "scale": 14000,
+            "translate": [
+              145,
+              85
+            ]
+          },
+          "layer": [
+            {
+              "data": {
+                "url": "data/geography/au_states.topojson",
+                "format": {
+                  "type": "topojson",
+                  "feature": "states"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "fill": "#E4EAEF",
+                "stroke": "#FFFFFF",
+                "strokeWidth": 0.8,
+                "clip": true
+              }
+            },
+            {
+              "data": {
+                "url": "data/derived/bank_post_locations_2026.csv",
+                "format": {
+                  "parse": {
+                    "lat": "number",
+                    "lon": "number"
+                  }
+                }
+              },
+              "mark": {
+                "type": "circle",
+                "size": 24,
+                "color": "#9C1043",
+                "opacity": 0.7,
+                "clip": true
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "lon",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "lat",
+                  "type": "quantitative"
+                },
+                "tooltip": [
+                  {
+                    "field": "state",
+                    "type": "nominal",
+                    "title": "State / territory"
+                  },
+                  {
+                    "field": "remoteness",
+                    "type": "nominal",
+                    "title": "Remoteness"
+                  },
+                  {
+                    "field": "lat",
+                    "type": "quantitative",
+                    "title": "Latitude",
+                    "format": ".3f"
+                  },
+                  {
+                    "field": "lon",
+                    "type": "quantitative",
+                    "title": "Longitude",
+                    "format": ".3f"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,375 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Cards span every group — but credit use skews to higher incomes",
+    "subtitle": "Share of payments made with cards, by age and income (RBA 2025).",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 11
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    },
+    "header": {
+      "labelFont": "Public Sans",
+      "labelColor": "#12263A",
+      "labelFontSize": 12,
+      "labelFontWeight": 700
+    }
+  },
+  "vconcat": [
+    {
+      "title": {
+        "text": "Card share of all payments",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#12263A"
+      },
+      "data": {
+        "url": "data/source/rba/cps_demographics_2025.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.measure == 'card_share_of_payments'"
+        },
+        {
+          "calculate": "{'age': 'Age', 'income_quartile': 'Income quartile'}[datum.dimension]",
+          "as": "panel"
+        },
+        {
+          "calculate": "{'18-29': '18–29', '65+': '65+', 'Q1 (lowest)': 'Q1', 'Q4 (highest)': 'Q4'}[datum.group]",
+          "as": "group_short"
+        },
+        {
+          "calculate": "'~' + format(datum.value_pct, 'd') + '%'",
+          "as": "value_label"
+        }
+      ],
+      "facet": {
+        "column": {
+          "field": "panel",
+          "type": "nominal",
+          "sort": [
+            "Age",
+            "Income quartile"
+          ],
+          "header": {
+            "title": null
+          }
+        }
+      },
+      "spec": {
+        "width": 230,
+        "height": 150,
+        "encoding": {
+          "x": {
+            "field": "group_short",
+            "type": "nominal",
+            "title": null,
+            "axis": {
+              "labelAngle": 0,
+              "labelFontSize": 11,
+              "domain": false,
+              "ticks": false
+            }
+          },
+          "y": {
+            "field": "value_pct",
+            "type": "quantitative",
+            "title": null,
+            "scale": {
+              "domain": [
+                0,
+                90
+              ]
+            },
+            "axis": {
+              "values": [
+                0,
+                45,
+                90
+              ],
+              "grid": true,
+              "format": "d",
+              "domain": false,
+              "ticks": false
+            }
+          }
+        },
+        "layer": [
+          {
+            "mark": {
+              "type": "bar",
+              "color": "#1c5cab",
+              "stroke": "#ffffff",
+              "strokeWidth": 1,
+              "height": 26,
+              "xOffset": 0
+            },
+            "encoding": {
+              "tooltip": [
+                {
+                  "field": "group",
+                  "type": "nominal",
+                  "title": "Group"
+                },
+                {
+                  "field": "value_pct",
+                  "type": "quantitative",
+                  "title": "Card share of payments (%)",
+                  "format": "d"
+                },
+                {
+                  "field": "value_type",
+                  "type": "nominal",
+                  "title": "Figure type"
+                },
+                {
+                  "field": "notes",
+                  "type": "nominal",
+                  "title": null
+                }
+              ]
+            }
+          },
+          {
+            "mark": {
+              "type": "text",
+              "font": "Public Sans",
+              "fontSize": 12,
+              "fontWeight": 600,
+              "color": "#12263A",
+              "align": "center",
+              "baseline": "bottom",
+              "dy": -4
+            },
+            "encoding": {
+              "text": {
+                "field": "value_label",
+                "type": "nominal"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "title": {
+        "text": "Debit and credit share of payments, by income quartile",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#12263A"
+      },
+      "data": {
+        "url": "data/source/rba/cps_demographics_2025.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.measure == 'debit_card_share' || datum.measure == 'credit_card_share'"
+        },
+        {
+          "calculate": "{'debit_card_share': 'Debit card', 'credit_card_share': 'Credit card'}[datum.measure]",
+          "as": "method"
+        },
+        {
+          "calculate": "{'Q1 (lowest)': 'Q1', 'Q4 (highest)': 'Q4'}[datum.group]",
+          "as": "group_short"
+        },
+        {
+          "calculate": "datum.value_type == 'lower_bound' ? 'over ' + format(datum.value_pct, 'd') + '%' : format(datum.value_pct, 'd') + '%'",
+          "as": "value_label"
+        }
+      ],
+      "facet": {
+        "column": {
+          "field": "method",
+          "type": "nominal",
+          "sort": [
+            "Debit card",
+            "Credit card"
+          ],
+          "header": {
+            "title": null
+          }
+        }
+      },
+      "spec": {
+        "width": 230,
+        "height": 150,
+        "encoding": {
+          "x": {
+            "field": "group_short",
+            "type": "nominal",
+            "title": null,
+            "axis": {
+              "labelAngle": 0,
+              "labelFontSize": 11,
+              "domain": false,
+              "ticks": false
+            }
+          },
+          "y": {
+            "field": "value_pct",
+            "type": "quantitative",
+            "title": null,
+            "scale": {
+              "domain": [
+                0,
+                60
+              ]
+            },
+            "axis": {
+              "values": [
+                0,
+                30,
+                60
+              ],
+              "grid": true,
+              "format": "d",
+              "domain": false,
+              "ticks": false
+            }
+          },
+          "color": {
+            "field": "method",
+            "type": "nominal",
+            "legend": null,
+            "scale": {
+              "domain": [
+                "Debit card",
+                "Credit card"
+              ],
+              "range": [
+                "#0E9488",
+                "#B01250"
+              ]
+            }
+          }
+        },
+        "layer": [
+          {
+            "mark": {
+              "type": "bar",
+              "stroke": "#ffffff",
+              "strokeWidth": 1,
+              "height": 26
+            },
+            "encoding": {
+              "tooltip": [
+                {
+                  "field": "method",
+                  "type": "nominal",
+                  "title": "Method"
+                },
+                {
+                  "field": "group",
+                  "type": "nominal",
+                  "title": "Income quartile"
+                },
+                {
+                  "field": "value_pct",
+                  "type": "quantitative",
+                  "title": "Share of payments (%)",
+                  "format": "d"
+                },
+                {
+                  "field": "value_type",
+                  "type": "nominal",
+                  "title": "Figure type"
+                }
+              ]
+            }
+          },
+          {
+            "mark": {
+              "type": "text",
+              "font": "Public Sans",
+              "fontSize": 12,
+              "fontWeight": 600,
+              "color": "#12263A",
+              "align": "center",
+              "baseline": "bottom",
+              "dy": -4
+            },
+            "encoding": {
+              "text": {
+                "field": "value_label",
+                "type": "nominal"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Only figures stated in RBA text are shown; ~ approximate, over = lower bound.",
+            "line": 1
+          },
+          {
+            "note": "Q1 = lowest income quartile, Q4 = highest (age-adjusted by RBA).",
+            "line": 2
+          }
+        ]
+      },
+      "width": 10,
+      "height": 40,
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 11,
+        "color": "#4C6074",
+        "align": "left",
+        "baseline": "top"
+      },
+      "encoding": {
+        "y": {
+          "field": "note",
+          "type": "nominal",
+          "axis": null,
+          "sort": {
+            "field": "line",
+            "op": "min"
+          }
+        },
+        "text": {
+          "field": "note",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

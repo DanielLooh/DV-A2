@@ -2,56 +2,459 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tap, Swipe, Done: Electronic Payments Across Australia</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  :root { --ink:#1d2b36; --muted:#5b6b78; --bg:#fbfaf7; --accent:#0b7285; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.65 Inter,sans-serif; }
-  main { max-width:960px; margin:0 auto; padding:0 20px 60px; }
-  h1 { font:600 2.6rem/1.15 Fraunces,serif; margin:48px 0 8px; }
-  h2 { font:600 1.5rem Fraunces,serif; margin:0 0 6px; }
-  .lede { color:var(--muted); font-size:1.15rem; max-width:62ch; }
-  section { margin-top:56px; } p.text { max-width:62ch; }
-  .chart { width:100%; } .row { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start; }
-  .demo { background:#fff3bf; border-left:4px solid #f08c00; padding:10px 14px; font-size:.9rem; margin-top:20px; }
-  footer { margin-top:64px; font-size:.85rem; color:var(--muted); border-top:1px solid #ddd; padding-top:16px; }
-  @media (max-width:760px){ .row{grid-template-columns:1fr;} }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How Australia Pays — Daniel Loh</title>
+<meta name="description" content="How Australians pay in 2026: cash, cards, phones and the places left behind. A data story by Daniel Loh (FIT3179 Data Visualisation 2).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E💳%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/vega@5.30.0/build/vega.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0/build/vega-lite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0/build/vega-embed.min.js"></script>
 </head>
-<body><main>
-  <h1>Tap, Swipe, Done</h1>
-  <p class="lede">Cash is fading from Australian wallets. But how evenly has the shift to cards and phones spread across the country?</p>
-  <div class="demo"><strong>Demo data:</strong> values in <code>data/*.csv</code> are placeholders. Replace them with real figures (see the sources below) before publishing.</div>
+<body>
+<a class="skip-link" href="#s1">Skip to the story</a>
 
-  <section>
-    <h2>1. Where electronic payments dominate</h2>
-    <p class="text">Darker states make more of their payments by card, phone or online transfer. Hover over a state for its exact share.</p>
-    <div id="map1" class="chart"></div>
-  </section>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">FIT3179 Data Visualisation Assignment 2</p>
+    <h1>In 2007, 69&percnt; of Australian payments were made in cash. By 2025, it was 15&percnt;.</h1>
+    <p class="hero-sub">Cards now carry most payments with phones increasingly replacing plastic at the counter. Follow how Australians pay, who faces barriers to going digital, and where cash and in-person banking remain accessible.</p>
+    <div class="hero-facts">
+      <div class="fact" tabindex="0" aria-describedby="cash-source">
+        <span class="fact-num">15%</span><span class="fact-label">of payments were cash in 2025, down from 69% in 2007</span>
+        <span class="fact-tooltip" id="cash-source" role="tooltip"><strong>Source: Reserve Bank of Australia (S1)</strong>Consumer Payment Behaviour in Australia, May 2026. Cash accounted for 15% of payments by number in the 2025 survey, compared with 69% in 2007. <a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read the RBA source ↗</a></span>
+      </div>
+      <div class="fact" tabindex="0" aria-describedby="card-source">
+        <span class="fact-num">~55%</span><span class="fact-label">of in-person card payments are made by tapping the physical card</span>
+        <span class="fact-tooltip" id="card-source" role="tooltip"><strong>Source: Reserve Bank of Australia (S1)</strong>Consumer Payment Behaviour in Australia, May 2026. Approximate tap-card share derived as 100% − 40% device payments − 5% inserted cards in 2025. <a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read the RBA source ↗</a></span>
+      </div>
+      <div class="fact" tabindex="0" aria-describedby="branch-source">
+        <span class="fact-num">3,108</span><span class="fact-label">bank branches remain in June 2026, from 5,694 in 2017</span>
+        <span class="fact-tooltip" id="branch-source" role="tooltip"><strong>Source: APRA (S7)</strong>Authorised deposit-taking institutions’ points of presence statistics. National bank branch totals: 3,108 in June 2026 and 5,694 in June 2017. <a href="https://www.apra.gov.au/authorised-deposit-taking-institutions-points-of-presence-statistics" target="_blank" rel="noopener">Read the APRA source ↗</a></span>
+      </div>
+    </div>
+    <p class="byline">Daniel Loh &middot; 13 November 2026</p>
+  </div>
+</header>
 
-  <section>
-    <h2>2. The mobile wallet hotspots</h2>
-    <p class="text">Bigger circles mean more people paying with Apple Pay, Google Pay and similar wallets. Population drives much of the pattern, so the biggest cities lead.</p>
-    <div id="map2" class="chart"></div>
-  </section>
+<main>
 
-  <section>
-    <h2>3. Where cash lingers</h2>
-    <p class="text">A tile grid gives every state the same visual weight, so small jurisdictions such as the ACT and Tasmania are not lost behind large, empty land areas.</p>
-    <div id="map3" class="chart"></div>
-  </section>
+<!-- ============ 1. HOW AUSTRALIA PAYS NOW ============ -->
+<section id="s1" class="story">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">1</span>
+    <div><h2>How Australia pays now</h2><p class="section-sub">The big shift happened fast &mdash; and it is mostly a story about cards.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>The Reserve Bank surveys how Australians pay roughly every three years. Two decades ago, cash carried most payments by number. In 2025 it carried about one in seven, and cards &mdash; debit above all &mdash; carry most of the rest.</p>
+      <p><strong>Read the chart:</strong> the thickness of each band shows its share of payments by number, rescaled so the rounded source shares sum to 100% in each survey year. The vertical position has no meaning. The cash band collapses after 2007 and stabilises near 15% in the 2020s. Bank transfers and other methods account for smaller shares.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c4_payment_stream.json" data-name="Payment mix 2007&ndash;2025"></div>
+      <figcaption>Share of payments by number. Surveys run about every three years, so the lines are smoothed &mdash; they interpolate, not observe. Source: Reserve Bank of Australia 2026, Consumer Payments Survey (S1, S2).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S1 · Consumer Payment Behaviour in Australia (Kim &amp; Reschke), RBA Bulletin May 2026</strong><span class="citation-links"><a href="#source-s1">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S2 · Cash Use in Australia: What the 2025 CPS Tells Us (MacGibbon, Royters &amp; Wang), RBA Bulletin April 2026</strong><span class="citation-links"><a href="#source-s2">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/apr/cash-use-in-australia-what-the-2025-consumer-payments-survey-tells-us.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+</section>
 
-  <footer>
-    <p><strong>Author:</strong> Daniel Loh, FIT3179, Monash University.</p>
-    <p><strong>Sources:</strong> Reserve Bank of Australia, Consumer Payments Survey and Payments Data (rba.gov.au); Australian Bureau of Statistics, state boundaries and Household Use of Information Technology (abs.gov.au); boundary GeoJSON from github.com/tonywr71/GeoJson-Data.</p>
-  </footer>
+<!-- ============ 2. PHONES TAKE OVER THE TAP ============ -->
+<section id="s2" class="story">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">2</span>
+    <div><h2>Phones take over the tap</h2><p class="section-sub">In-person card payments are moving from plastic to phone.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>A card payment at the counter used to mean a plastic card. Since 2022, a growing share happens with a phone or watch instead &mdash; roughly 40% of in-person card payments by 2025.</p>
+      <p><strong>Read the chart:</strong> each grid contains 100 squares. Rounded channel shares are rescaled to fill the grid; the 2022 squares represent about 1 percentage point each. Labels retain the published shares. Device tapping grows while inserting a card stays at about 5%.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c5_card_channels_waffle.json" data-name="How in-person card payments are made"></div>
+      <figcaption>Waffle charts: rounded channel shares, 2022 vs 2025. The 2022 inputs total 98%; largest-remainder allocation fills 100 squares (32 device, 63 card, 5 insert). Tap-card shares are derived: 2025 = 100 − 40 − 5; 2022 = 55 + 7. Sources: RBA Consumer Payments Survey (S1); wallet bar: October 2024 (S4).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S1 · Consumer Payment Behaviour in Australia (Kim &amp; Reschke), RBA Bulletin May 2026</strong><span class="citation-links"><a href="#source-s1">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S4 · Retail Payments October 2024 (change notice)</strong><span class="citation-links"><a href="#source-s4">View full citation below</a><a href="https://www.rba.gov.au/statistics/frequency/retail-payments/2024/retail-payments-1024.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Online, the same pattern holds: payments keep growing and nearly half now happen inside a phone app.</p>
+      <p><strong>Read the chart:</strong> the top panel stacks the ways people pay online. The bottom panel tracks the share of online payments made in a mobile app, which reached about 46% in 2025.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c6_online_payments.json" data-name="Online payments and apps"></div>
+      <figcaption>Online payments as a share of all payments by number (18% in 2022, 20% in 2025); separately, app payments as a share of online payments (46% in 2025). Source: Reserve Bank of Australia 2026 (S1).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S1 · Consumer Payment Behaviour in Australia (Kim &amp; Reschke), RBA Bulletin May 2026</strong><span class="citation-links"><a href="#source-s1">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 3. WHO STILL USES CASH ============ -->
+<section id="s3" class="story">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">3</span>
+    <div><h2>Who still uses cash</h2><p class="section-sub">Cash has retreated purpose by purpose &mdash; and the people still relying on it are not evenly distributed.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Cash use fell across the purposes shown, with different starting points and rates of decline. These survey snapshots describe the change; they do not explain why people changed payment methods.</p>
+      <p><strong>Read the chart:</strong> paired bars compare cash shares in 2007 (slate) and 2025 (magenta). The top panel groups in-person payments by purpose; the bottom panel compares all payments by number and by value. Leisure and groceries/fuel have no 2007 figure in the supplied data, so only their 2025 bars are shown.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c8_cash_purpose_bars.json" data-name="Where cash has retreated by purpose"></div>
+      <figcaption>Cash share by purpose, 2007 to 2025 (approximate values marked &ldquo;~&rdquo;). Source: Reserve Bank of Australia 2026 (S2).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S2 · Cash Use in Australia: What the 2025 CPS Tells Us (MacGibbon, Royters &amp; Wang), RBA Bulletin April 2026</strong><span class="citation-links"><a href="#source-s2">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/apr/cash-use-in-australia-what-the-2025-consumer-payments-survey-tells-us.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>If payments keep going digital, who is at risk of being left behind? The digital-inclusion data gives a clear answer: older Australians, low-income households and public housing residents.</p>
+      <p><strong>Read the chart:</strong> each dot is the share of a group who are highly digitally excluded. The most-affected groups sit at three times the national average.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c16_digital_exclusion_dotplot.json" data-name="Digital exclusion by group"></div>
+      <figcaption>ADII 2025 (data collected 2024). One in five Australians overall is highly digitally excluded. Source: ADII (S6).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S6 · 2025 Australian Digital Inclusion Index (Thomas et al.), doi:10.60836/mtsq-at22</strong><span class="citation-links"><a href="#source-s6">View full citation below</a><a href="https://doi.org/10.60836/mtsq-at22" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Card use itself spans every age and income group &mdash; but the <em>type</em> of card differs. Debit dominates everywhere; credit skews strongly to higher incomes.</p>
+      <p><strong>Read the chart:</strong> the top pair compares card use across age and income. The bottom pair splits that card use into debit and credit by income quartile.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c17_card_demographics.json" data-name="Card use by age and income"></div>
+      <figcaption>Only figures stated in RBA text are plotted; income quartiles are age-adjusted by the RBA. The survey has about 1,200 respondents; small subgroup differences need caution. Source: Reserve Bank of Australia 2026 (S1).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S1 · Consumer Payment Behaviour in Australia (Kim &amp; Reschke), RBA Bulletin May 2026</strong><span class="citation-links"><a href="#source-s1">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 4. WHERE CASH IS PRACTICAL ============ -->
+<section id="s4" class="story">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">4</span>
+    <div><h2>Where cash is practical</h2><p class="section-sub">Digital inclusion and access to cash describe different parts of the payment landscape.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Digital inclusion combines access, affordability and digital ability. State and territory averages differ, and can conceal larger gaps within communities.</p>
+      <p><strong>Read the map:</strong> darker blue means a higher digital-inclusion score. The ACT leads; every state sits within about ten points.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/m1_digital_readiness.json" data-name="Digital readiness by state"></div>
+      <figcaption>ADII 2025 overall score by state (data collected 2024). Source: ADII (S6).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S6 · 2025 Australian Digital Inclusion Index (Thomas et al.), doi:10.60836/mtsq-at22</strong><span class="citation-links"><a href="#source-s6">View full citation below</a><a href="https://doi.org/10.60836/mtsq-at22" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S15 · ASGS Edition 3 (2021) State and Territory boundaries</strong><span class="citation-links"><a href="#source-s15">View full citation below</a><a href="https://geo.abs.gov.au/arcgis/rest/services/ASGS2021/STE/MapServer" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Bank branch counts have fallen in every state and territory since 2017. Bank@Post, the banking services offered through participating post offices, provides another way to bank in person. The map shows where these locations are recorded; it does not show whether they replace a closed branch.</p>
+      <p><strong>Read the map:</strong> each equal-sized dot marks one Bank@Post location in June 2026. The insets enlarge Sydney and Melbourne, where dots overlap. Dots show locations, not the number of customers or services available.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/m2_bank_post_dots.json" data-name="Bank@Post locations, June 2026"></div>
+      <figcaption>3,299 Bank@Post locations with recorded coordinates across the eight states and territories, June 2026; five external-territory records excluded. Insets repeat locations at a larger scale. Source: APRA (S7).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S7 · ADI points of presence statistics, June 2017 to June 2026</strong><span class="citation-links"><a href="#source-s7">View full citation below</a><a href="https://www.apra.gov.au/authorised-deposit-taking-institutions-points-of-presence-statistics" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S15 · ASGS Edition 3 (2021) State and Territory boundaries</strong><span class="citation-links"><a href="#source-s15">View full citation below</a><a href="https://geo.abs.gov.au/arcgis/rest/services/ASGS2021/STE/MapServer" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Branches are only one channel. Every way of reaching a bank in person has shrunk since 2017 &mdash; except Bank@Post, the banking services offered through post offices.</p>
+      <p><strong>Read the chart:</strong> each tile is a state's count of that service, indexed to 100 in June 2017. Pink means decline, blue means growth. Bank@Post is the only column that holds steady or grows in most states.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c11_channel_heatmap.json" data-name="Cash-access channels by state"></div>
+      <figcaption>Indexed service counts by state and year (2017 = 100). The ADI-ATM fall partly reflects banks selling ATMs to independent operators, not only closures. Source: APRA (S7).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S7 · ADI points of presence statistics, June 2017 to June 2026</strong><span class="citation-links"><a href="#source-s7">View full citation below</a><a href="https://www.apra.gov.au/authorised-deposit-taking-institutions-points-of-presence-statistics" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Access to cash varies sharply by remoteness. In very remote areas, 95% of residents live within about 95 km of a cash point; in major cities it is under 2 km.</p>
+      <p><strong>Read the chart:</strong> the top panel shows how far 95% of residents live from their nearest way to withdraw cash, by remoteness. The bottom panel compares service types &mdash; post offices keep most people within about 4 km.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c10_cash_distance.json" data-name="Distance to the nearest cash point"></div>
+      <figcaption>Distances at the 95th (and 99th) percentile of residents, June 2024. Log scale. Source: Reserve Bank of Australia 2025 (S3).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S3 · Access to Cash in Australia (Faferko, Rylah &amp; Wang), RBA Bulletin January 2025</strong><span class="citation-links"><a href="#source-s3">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2025/jan/access-to-cash-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>And digital payments need a connection. Outside the cities, interruptions to mobile and internet service are a routine part of life &mdash; one reason cash remains a practical backup.</p>
+      <p><strong>Read the chart:</strong> each bar shows how often people in each remoteness area report interruptions to their mobile or internet use.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c12_connectivity_stacked.json" data-name="Connectivity interruptions by remoteness"></div>
+      <figcaption>Frequency of connectivity interruptions by remoteness (ADII 2025). Source: ADII (S6).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S6 · 2025 Australian Digital Inclusion Index (Thomas et al.), doi:10.60836/mtsq-at22</strong><span class="citation-links"><a href="#source-s6">View full citation below</a><a href="https://doi.org/10.60836/mtsq-at22" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Compare the branch network in 2017 and 2026. Nearby locations are grouped into geographic cells; the map shows the network in each year rather than tracking individual closures.</p>
+      <p><strong>Read the map:</strong> circle area is proportional to the number of bank branches in that area. The radio buttons flip between years.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/m3_branch_symbols.json" data-name="Branch locations, 2017 vs 2026"></div>
+      <figcaption>Bank branch locations aggregated to 0.25&deg; cells (mainland states and territories; external territories excluded). Source: APRA (S7).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S7 · ADI points of presence statistics, June 2017 to June 2026</strong><span class="citation-links"><a href="#source-s7">View full citation below</a><a href="https://www.apra.gov.au/authorised-deposit-taking-institutions-points-of-presence-statistics" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S15 · ASGS Edition 3 (2021) State and Territory boundaries</strong><span class="citation-links"><a href="#source-s15">View full citation below</a><a href="https://geo.abs.gov.au/arcgis/rest/services/ASGS2021/STE/MapServer" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Put the whole picture together and a pattern emerges: digitally ready states are still losing their in-person banking services. Bank@Post provides another face-to-face channel. These state totals cannot establish whether it is the last service in an individual community.</p>
+      <p><strong>Read the chart:</strong> each line is a state, traced across digital-inclusion scores and the change in each in-person channel. Each axis is scaled separately from its lowest to highest state value; higher means a higher score or a smaller service decline. Positions across different axes are not directly comparable. Hover a line to isolate a state.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c13_state_profiles_parallel.json" data-name="State profiles: readiness vs access"></div>
+      <figcaption>ADII 2025 scores and APRA service changes 2017&ndash;2026 (no per-capita measures &mdash; see data notes). Sources: ADII (S6), APRA (S7).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S6 · 2025 Australian Digital Inclusion Index (Thomas et al.), doi:10.60836/mtsq-at22</strong><span class="citation-links"><a href="#source-s6">View full citation below</a><a href="https://doi.org/10.60836/mtsq-at22" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S7 · ADI points of presence statistics, June 2017 to June 2026</strong><span class="citation-links"><a href="#source-s7">View full citation below</a><a href="https://www.apra.gov.au/authorised-deposit-taking-institutions-points-of-presence-statistics" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 5. NEWER WAYS TO PAY ============ -->
+<section id="s5" class="story">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">5</span>
+    <div><h2>Newer ways to pay</h2><p class="section-sub">Australians know about PayID and QR codes &mdash; far fewer use them.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>New payment methods face a gap between awareness and use. Nearly nine in ten Australians know about PayID; far fewer have used it in the past year.</p>
+      <p><strong>Read the chart:</strong> each row compares the share of people aware of a method (blue) with the share who used it in the past 12 months (magenta). Open markers and &ldquo;under&rdquo; labels flag figures published only as upper bounds.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c7_aware_vs_used_dumbbell.json" data-name="Aware of vs has used"></div>
+      <figcaption>Awareness vs past-year use of newer payment methods, 2025. Source: Reserve Bank of Australia 2026 (S1).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S1 · Consumer Payment Behaviour in Australia (Kim &amp; Reschke), RBA Bulletin May 2026</strong><span class="citation-links"><a href="#source-s1">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Behind the apps are networks that move money between accounts. The New Payments Platform (NPP), which enables fast bank transfers, has the strongest growth in payment value among the services shown; cheque payment values are falling.</p>
+      <p><strong>Read the chart:</strong> bars show year-ended growth in the value of payments on each rail, to September 2025 and September 2026.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c9_rail_growth_diverging.json" data-name="Which payment rails are growing"></div>
+      <figcaption>Year-ended growth in monthly payment values, Sep 2025 and Sep 2026. Source: RBA Retail Payments (S5).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S5 · Retail Payments monthly summaries (Aug 2020 to Sep 2026)</strong><span class="citation-links"><a href="#source-s5">View full citation below</a><a href="https://www.rba.gov.au/statistics/frequency/retail-payments/2026/retail-payments-0926.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Payment rules have also changed. The timeline places cash acceptance, card fees, recipient name checks and the planned end of cheques alongside the introduction of newer payment services. It is a dated snapshot, as at 13 November 2026.</p>
+      <p><strong>Read the chart:</strong> each row is a milestone, placed by date. Blue dots are already in force; red dots are still to come. The dashed line marks 13 November 2026. Year-only and month-only milestones use the start of that period for placement; mid-2027 is approximate.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c15_policy_timeline.json" data-name="Rules and deadlines"></div>
+      <figcaption>Selected payment-system milestones, 2018&ndash;2029. Sources: RBA (S1, S2, S4, S11), ASIC (S14) and the secondary report cited in the supplied data (S8).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S1 · Consumer Payment Behaviour in Australia (Kim &amp; Reschke), RBA Bulletin May 2026</strong><span class="citation-links"><a href="#source-s1">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S4 · Retail Payments October 2024 (change notice)</strong><span class="citation-links"><a href="#source-s4">View full citation below</a><a href="https://www.rba.gov.au/statistics/frequency/retail-payments/2024/retail-payments-1024.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S14 · Buy now pay later credit contracts: Credit licensing (INFO 285)</strong><span class="citation-links"><a href="#source-s14">View full citation below</a><a href="https://www.asic.gov.au/regulatory-resources/credit/buy-now-pay-later-credit-contracts-credit-licensing" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S2 · Cash Use in Australia: What the 2025 CPS Tells Us (MacGibbon, Royters &amp; Wang), RBA Bulletin April 2026</strong><span class="citation-links"><a href="#source-s2">View full citation below</a><a href="https://www.rba.gov.au/publications/bulletin/2026/apr/cash-use-in-australia-what-the-2025-consumer-payments-survey-tells-us.html" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S11 · RBA Review of Merchant Card Payment Costs and Surcharging, Conclusions Paper March 2026 and FAQs</strong><span class="citation-links"><a href="#source-s11">View full citation below</a><a href="https://www.rba.gov.au/payments-and-infrastructure/review-of-retail-payments-regulation/2026-03/conclusions-paper/faqs/" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S8 · Australian Payment Fraud 2026 report (coverage via Banking Day, 11 Nov 2026)</strong><span class="citation-links"><a href="#source-s8">View full citation below</a><a href="https://www.bankingday.com/auspaynet-says-total-card-fraud-has-declined-but-overseas-fraud-remains-disproportionate-to-domestic" target="_blank" rel="noopener">Read cited report (secondary source) ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 6. SAFETY ============ -->
+<section id="s6" class="story">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">6</span>
+    <div><h2>The price of convenience</h2><p class="section-sub">Scams and card fraud measure different risks and should be read separately.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>The scam categories shown have different loss trends. Separately, the reported domestic fraud rate for card payments made without presenting the card fell between the years shown. These are different measures; neither establishes that digital payments caused a change in risk.</p>
+      <p><strong>Read the chart:</strong> the top panel compares reported scam losses by type, 2024 vs 2025 (log scale). The bottom panel shows the domestic card-not-present fraud rate falling from about $1.07 to about 54 cents per $1,000 spent.</p>
+    </div>
+    <figure class="chart-panel">
+      <div class="vl" data-spec="specs/c14_scam_losses_slope.json" data-name="Scam losses and card fraud"></div>
+      <figcaption>Reported losses combine several reporting bodies (Scamwatch, ReportCyber, IDCARE and industry data). Sources: NASC (S10), AusPayNet (S8, S9).
+      <details class="chart-citations">
+        <summary>Show citations</summary>
+        <ul>
+          <li><strong>S10 · Targeting Scams: Report of the National Anti-Scam Centre 2024 and 2025</strong><span class="citation-links"><a href="#source-s10">View full citation below</a><a href="https://www.nasc.gov.au/reports-and-publications/targeting-scams" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+          <li><strong>S8 · Australian Payment Fraud 2026 report (coverage via Banking Day, 11 Nov 2026)</strong><span class="citation-links"><a href="#source-s8">View full citation below</a><a href="https://www.bankingday.com/auspaynet-says-total-card-fraud-has-declined-but-overseas-fraud-remains-disproportionate-to-domestic" target="_blank" rel="noopener">Read cited report (secondary source) ↗</a></span></li>
+          <li><strong>S9 · Australian Payment Fraud 2025 report (Jan-Dec 2024 data)</strong><span class="citation-links"><a href="#source-s9">View full citation below</a><a href="https://auspaynet.com.au/sites/default/files/2025-08/2025_Australian_Payment_Fraud_Report.pdf" target="_blank" rel="noopener">Read original source ↗</a></span></li>
+        </ul>
+      </details>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section id="closing" class="story closing">
+  <div class="section-head">
+    <span class="step" aria-hidden="true">&#9632;</span>
+    <div><h2>What it adds up to</h2><p class="section-sub">Cash is becoming a backup &mdash; but a backup still needs somewhere to be withdrawn.</p></div>
+  </div>
+  <div class="row">
+    <div class="prose">
+      <p>Australia’s payment habits have changed within a generation: cash fell from 69% of payments in 2007 to 15% in 2025. Cards dominate payment counts, and devices account for a growing share of card payments.</p>
+      <p>The transition is uneven. Digital exclusion is higher in some groups, cash withdrawal distances are greater in remote areas, and bank branch counts have fallen. A smaller cash share does not remove the need to consider cash access and reliable alternatives.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATA NOTES ============ -->
+<section id="data-notes" class="notes">
+  <h2>Data notes</h2>
+  <ul>
+    <li><strong>Survey precision.</strong> The RBA Consumer Payments Survey covers roughly 1,200 people and 14,000 transactions; no confidence intervals are published, so small differences between groups should be read with caution.</li>
+    <li><strong>Approximate figures.</strong> Values marked &ldquo;~&rdquo; are taken from rounded figures in RBA text or chart descriptions rather than underlying data. Upper bounds are labelled “under”; lower bounds are labelled “over”. The 2007&ndash;2025 survey series runs roughly every three years, so lines between survey years interpolate rather than observe.</li>
+    <li><strong>Conflicting figures excluded.</strong> Convenient cash access (75% vs 78%), the 2025 total card-fraud value, the share of over-65s paying entirely in cash, registered PayID counts and BNPL usage each had conflicting or unverified published figures and were left out of charts. Confirmed figures will replace them.</li>
+    <li><strong>ATMs are not all disappearing.</strong> The fall in bank-operated ATMs partly reflects banks selling ATM fleets to independent operators, not only closures. Independent ATMs are counted separately.</li>
+    <li><strong>Branch counts.</strong> APRA's totals are 5,694 (June 2017) and 3,108 (June 2026); a small number of records lack coordinates, so the symbol map plots 5,690 and 3,106.</li>
+    <li><strong>No per-capita figures.</strong> APRA's published population figures only cover SA2s with services, so this page avoids per-capita comparisons until ABS population data is added.</li>
+    <li><strong>Correlation, not causation.</strong> This page describes associations in published data; it does not claim causal relationships between payment behaviour, access or exclusion.</li>
+    <li><strong>Coverage and exclusions.</strong> No regional payment-method dataset or LGA-level digital-inclusion data is included: maps describe access and readiness, not regional payment behaviour. APRA EFTPOS counts and an unverified credit interchange-cap comparison are excluded. Irregular monthly retail-payment levels are not drawn as a continuous series.</li>
+    <li><strong>Verification.</strong> The September 2026 growth-table columns were checked against the RBA release. The buy now pay later licensing date was checked against ASIC. Remaining secondary fraud figures are recorded in the hand-off notes; map boundaries have been replaced with official ABS data.</li>
+    <li><strong>Scam-loss data.</strong> Loss figures combine several reporting bodies and cover reported losses only &mdash; actual losses are likely higher. The supplied CSV has no 2025 investment-scam value; that category is omitted from the comparison.</li>
+  </ul>
+</section>
+
+<!-- ============ SOURCES ============ -->
+<section id="sources" class="sources">
+  <h2>Sources</h2>
+  <p>Data pack accessed 12 November 2026; selected primary-source and reuse checks updated 13 November 2026. Source IDs in chart citations and the references below correspond to <a href="data/metadata/sources.csv">the source register</a>. ADII-derived material is shared under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>; other source rights remain with their owners.</p>
+  <ol class="source-list">
+    <li id="source-s1" tabindex="-1"><span class="source-id">S1</span> <strong>RBA Bulletin, May 2026 &mdash; Consumer Payment Behaviour in Australia</strong> (2025 Consumer Payments Survey). <a href="https://www.rba.gov.au/publications/bulletin/2026/may/consumer-payment-behaviour-in-australia.html" target="_blank" rel="noopener">rba.gov.au</a> &middot; <a href="https://www.rba.gov.au/copyright/">RBA reuse terms</a>: attribution required; financial data subject to Section 5, other eligible material CC BY 4.0; third-party exceptions apply.</li>
+    <li id="source-s2" tabindex="-1"><span class="source-id">S2</span> <strong>RBA Bulletin, April 2026 &mdash; Cash Use in Australia</strong> (2025 CPS). <a href="https://www.rba.gov.au/publications/bulletin/2026/apr/cash-use-in-australia-what-the-2025-consumer-payments-survey-tells-us.html" target="_blank" rel="noopener">rba.gov.au</a> &middot; <a href="https://www.rba.gov.au/copyright/">RBA reuse terms</a>: attribution required; financial data subject to Section 5, other eligible material CC BY 4.0; third-party exceptions apply.</li>
+    <li id="source-s3" tabindex="-1"><span class="source-id">S3</span> <strong>RBA Bulletin, January 2025 &mdash; Access to Cash in Australia</strong> (June 2024 distances). <a href="https://www.rba.gov.au/publications/bulletin/2025/jan/access-to-cash-in-australia.html" target="_blank" rel="noopener">rba.gov.au</a> &middot; <a href="https://www.rba.gov.au/copyright/">RBA reuse terms</a>: attribution required; financial data subject to Section 5, other eligible material CC BY 4.0; third-party exceptions apply.</li>
+    <li id="source-s4" tabindex="-1"><span class="source-id">S4</span> <strong>Retail Payments October 2024 (change notice)</strong> — Reserve Bank of Australia. October 2024. <a href="https://www.rba.gov.au/statistics/frequency/retail-payments/2024/retail-payments-1024.html" target="_blank" rel="noopener">Read source ↗</a> · Check RBA copyright notice.</li>
+    <li id="source-s5" tabindex="-1"><span class="source-id">S5</span> <strong>RBA Retail Payments</strong> &mdash; monthly summaries, including September 2026. <a href="https://www.rba.gov.au/statistics/frequency/retail-payments/2026/retail-payments-0926.html" target="_blank" rel="noopener">rba.gov.au</a> &middot; <a href="https://www.rba.gov.au/copyright/">RBA reuse terms</a>: attribution required; financial data subject to Section 5, other eligible material CC BY 4.0; third-party exceptions apply.</li>
+    <li id="source-s6" tabindex="-1"><span class="source-id">S6</span> <strong>2025 Australian Digital Inclusion Index</strong> (Thomas et al.; data collected 2024). <a href="https://doi.org/10.60836/mtsq-at22" target="_blank" rel="noopener">doi.org</a> &middot; CC BY-NC-SA 4.0.</li>
+    <li id="source-s7" tabindex="-1"><span class="source-id">S7</span> <strong>APRA ADI points of presence statistics</strong>, June 2017 to June 2026. <a href="https://www.apra.gov.au/authorised-deposit-taking-institutions-points-of-presence-statistics" target="_blank" rel="noopener">apra.gov.au</a> &middot; CC BY 3.0 AU.</li>
+    <li id="source-s8" tabindex="-1"><span class="source-id">S8</span> <strong>Australian Payment Fraud 2026 report (coverage via Banking Day, 11 Nov 2026)</strong> — AusPayNet (reported by Banking Day). Calendar 2025. <a href="https://www.bankingday.com/auspaynet-says-total-card-fraud-has-declined-but-overseas-fraud-remains-disproportionate-to-domestic" target="_blank" rel="noopener">Read source ↗</a> · Secondary source; confirm figures in AusPayNet primary report.</li>
+    <li id="source-s9" tabindex="-1"><span class="source-id">S9</span> <strong>AusPayNet Australian Payment Fraud report 2025</strong> (2024 calendar year). <a href="https://auspaynet.com.au/sites/default/files/2025-08/2025_Australian_Payment_Fraud_Report.pdf" target="_blank" rel="noopener">auspaynet.com.au</a>. &middot; Check AusPayNet terms of use.</li>
+    <li id="source-s10" tabindex="-1"><span class="source-id">S10</span> <strong>ACCC / National Anti-Scam Centre &mdash; Targeting Scams 2024 and 2025.</strong> <a href="https://www.nasc.gov.au/reports-and-publications/targeting-scams" target="_blank" rel="noopener">nasc.gov.au</a> &middot; <a href="https://www.accc.gov.au/about-us/using-our-website/disclaimer-and-copyright">CC BY 4.0 under ACCC copyright terms</a>, with report-specific and third-party exceptions.</li>
+    <li id="source-s11" tabindex="-1"><span class="source-id">S11</span> <strong>RBA Review of Merchant Card Payment Costs and Surcharging</strong> (Conclusions Paper, March 2026). <a href="https://www.rba.gov.au/payments-and-infrastructure/review-of-retail-payments-regulation/2026-03/conclusions-paper/faqs/" target="_blank" rel="noopener">rba.gov.au</a> &middot; <a href="https://www.rba.gov.au/copyright/">RBA reuse terms</a>: attribution required; financial data subject to Section 5, other eligible material CC BY 4.0; third-party exceptions apply.</li>
+    <li id="source-s12" tabindex="-1"><span class="source-id">S12</span> <strong>Card payment surcharge changes</strong> — business.gov.au. 2026. <a href="https://business.gov.au/news/card-payment-surcharge-changes" target="_blank" rel="noopener">Read source ↗</a> · Government site; check terms.</li>
+    <li id="source-s13" tabindex="-1"><span class="source-id">S13</span> <strong>CBA newsroom: card surcharging from October 1</strong> — Commonwealth Bank. Sept 2026. <a href="https://www.commbank.com.au/articles/newsroom/2026/09/cba-card-surcharging.html" target="_blank" rel="noopener">Read source ↗</a> · Secondary; interchange cap figure to confirm against RBA.</li>
+    <li id="source-s14" tabindex="-1"><span class="source-id">S14</span> <strong>ASIC — Buy now pay later credit contracts: Credit licensing (INFO 285).</strong> <a href="https://www.asic.gov.au/regulatory-resources/credit/buy-now-pay-later-credit-contracts-credit-licensing">asic.gov.au</a> · Primary verification of the 10 June 2025 milestone.</li>
+    <li id="source-s15" tabindex="-1"><span class="source-id">S15</span> <strong>ASGS Edition 3 (2021) State and Territory boundaries</strong> — Australian Bureau of Statistics. 2021 state geometry. <a href="https://geo.abs.gov.au/arcgis/rest/services/ASGS2021/STE/MapServer" target="_blank" rel="noopener">Read source ↗</a> · CC BY 4.0; see BOUNDARIES.md for transformations.</li>
+  </ol>
+  <p class="boundary-note">State boundaries: Australian Bureau of Statistics, ASGS Edition 3 (2021), State and Territory boundaries, accessed 13 November 2026 via the ABS geospatial service. © Commonwealth of Australia, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Converted to TopoJSON, rounded and with tiny islands omitted for display. External territories excluded; statistical values are unchanged.</p>
+</section>
+
+<!-- ============ COLOPHON ============ -->
+<footer class="colophon">
+  <p><strong>How this was made.</strong> All 17 charts are <a href="https://vega.github.io/vega-lite/" target="_blank" rel="noopener">Vega-Lite</a> specifications (pinned: vega 5.30.0, vega-lite 5.21.0, vega-embed 6.26.0), written as separate JSON files under <code>specs/</code> and embedded into this page unmodified.</p>
+  <p><strong>Use of AI.</strong> This assignment was built with the assistance of AI tools (Claude Code and OpenAI Codex) for chart specification, page assembly and data preparation, under the direction of the author; the author must review the final submission. All figures derive from the sources listed above; the takeaways and any errors are the author's responsibility.</p>
+  <p class="sig">Daniel Loh &middot; FIT3179 Data Visualisation 2 &middot; 13 November 2026</p>
+</footer>
+
 </main>
-<script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
-<script>
-  ["map1_choropleth","map2_symbols","map3_tilegrid"].forEach((f,i)=>
-    vegaEmbed("#map"+(i+1), "specs/"+f+".vg.json", {actions:false}));
-</script>
-</body></html>
+<script src="js/main.js"></script>
+</body>
+</html>

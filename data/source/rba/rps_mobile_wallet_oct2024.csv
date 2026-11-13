@@ -1,0 +1,12 @@
+group,measure,value,unit,notes,period,source_id,value_type
+device_present_transactions,mobile_wallet,44,percent,RBA Retail Payments Oct 2024: share by number of device-present transactions acquired in Australia,2024-10,S4,exact
+device_present_transactions,contactless_card,54,percent,,2024-10,S4,exact
+device_present_transactions,card_insert,2,percent,,2024-10,S4,exact
+device_not_present_transactions,card,85,percent,Online / remote transactions acquired in Australia,2024-10,S4,exact
+device_not_present_transactions,mobile_wallet,15,percent,,2024-10,S4,exact
+australian_issued_debit_transactions,made_via_mobile_wallet,39,percent,Includes device-present and not-present,2024-10,S4,exact
+australian_issued_credit_charge_transactions,made_via_mobile_wallet,33,percent,,2024-10,S4,exact
+australian_issued_debit_cards,enrolled_in_mobile_wallet,46,percent,,2024-10,S4,exact
+australian_issued_credit_charge_cards,enrolled_in_mobile_wallet,40,percent,,2024-10,S4,exact
+average_transaction_size,contactless_device_present,46,dollars,Approx. ($46),2024-10,S4,exact
+average_transaction_size,card_insert,155,dollars,Approx. ($155),2024-10,S4,exact

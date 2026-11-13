@@ -1,0 +1,13 @@
+method,measure,year,share_of_respondents_pct,value_type,source_id,notes
+PayID,aware,2022,57,exact,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+PayID,aware,2025,80,approx,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+PayID,used_past_12m,2022,32,exact,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+PayID,used_past_12m,2025,50,approx,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+Cryptocurrency,aware,2025,66,exact,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+Cryptocurrency,used_past_12m,2025,2,approx,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+QR code,used_past_12m,2025,10,exact,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+PayTo,aware,2025,20,upper_bound,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+PayTo,used_past_12m,2025,5,upper_bound,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+Alipay/WeChat Pay,aware,2025,20,upper_bound,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+Alipay/WeChat Pay,used_past_12m,2025,5,upper_bound,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"
+PayID (age 18-29),used_past_12m,2025,72,exact,S1,"upper_bound = text says ""below"" this value; QR awareness not stated numerically"

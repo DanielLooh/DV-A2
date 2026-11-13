@@ -1,0 +1,19 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node validate.mjs",
+    "check:browser": "node chrome_check.mjs"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "playwright": "^1.49.1",
+    "sharp": "^0.35.5",
+    "vega": "5.30.0",
+    "vega-embed": "6.26.0",
+    "vega-lite": "5.21.0"
+  }
+}

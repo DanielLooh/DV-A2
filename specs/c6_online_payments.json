@@ -1,0 +1,322 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Online payments keep growing — and nearly half happen in an app",
+    "subtitle": "Share of the number of consumer payments, excluding automatic payments.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD"
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "vconcat": [
+    {
+      "data": {
+        "url": "data/source/rba/cps_online_payments_2007_2025.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.measure == 'bpay_internet_banking' || datum.measure == 'credit_card' || datum.measure == 'debit_card' || datum.measure == 'other'"
+        },
+        {
+          "calculate": "datum.measure == 'debit_card' ? 'Debit card' : datum.measure == 'credit_card' ? 'Credit card' : datum.measure == 'bpay_internet_banking' ? 'Bank transfer / BPAY' : 'Other'",
+          "as": "method_label"
+        }
+      ],
+      "width": 560,
+      "height": 210,
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "scale": {
+            "domain": [
+              2007,
+              2010,
+              2013,
+              2016,
+              2019,
+              2022,
+              2025
+            ]
+          },
+          "axis": {
+            "labelAngle": 0,
+            "labels": false
+          }
+        },
+        "y": {
+          "field": "value_pct",
+          "type": "quantitative",
+          "title": "Share of all payments (%)",
+          "stack": true,
+          "axis": {
+            "grid": true
+          }
+        },
+        "color": {
+          "field": "method_label",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Debit card",
+              "Credit card",
+              "Bank transfer / BPAY",
+              "Other"
+            ],
+            "range": [
+              "#0E9488",
+              "#B01250",
+              "#3D7BC4",
+              "#3E8E41"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "method_label",
+            "type": "nominal",
+            "title": "Method"
+          },
+          {
+            "field": "value_pct",
+            "type": "quantitative",
+            "title": "Share of all payments (%)",
+            "format": "d"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "area",
+            "stroke": "#ffffff",
+            "strokeWidth": 1,
+            "line": true
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "year": 2025,
+                "y": 22,
+                "label": "20% of all payments"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "right",
+            "baseline": "bottom",
+            "dx": -2
+          },
+          "encoding": {
+            "x": {
+              "field": "year",
+              "type": "ordinal",
+              "scale": {
+                "domain": [
+                  2007,
+                  2010,
+                  2013,
+                  2016,
+                  2019,
+                  2022,
+                  2025
+                ]
+              }
+            },
+            "y": {
+              "field": "y",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/source/rba/cps_online_payments_2007_2025.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.measure == 'mobile_app_share_of_online' && datum.year >= 2013"
+        }
+      ],
+      "width": 560,
+      "height": 180,
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "scale": {
+            "domain": [
+              2007,
+              2010,
+              2013,
+              2016,
+              2019,
+              2022,
+              2025
+            ]
+          },
+          "axis": {
+            "labelAngle": 0
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "color": "#B01250",
+            "strokeWidth": 2.5,
+            "point": {
+              "filled": true,
+              "size": 45,
+              "color": "#B01250"
+            }
+          },
+          "encoding": {
+            "y": {
+              "field": "value_pct",
+              "type": "quantitative",
+              "title": "App share of online payments (%)",
+              "scale": {
+                "domain": [
+                  0,
+                  50
+                ]
+              },
+              "axis": {
+                "grid": true
+              }
+            },
+            "tooltip": [
+              {
+                "field": "year",
+                "type": "ordinal",
+                "title": "Year"
+              },
+              {
+                "field": "value_pct",
+                "type": "quantitative",
+                "title": "Made in a mobile app (%)",
+                "format": "d"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "year": 2025,
+                "y": 40,
+                "label": "46% — made in a phone app"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "right",
+            "dx": -4
+          },
+          "encoding": {
+            "x": {
+              "field": "year",
+              "type": "ordinal",
+              "scale": {
+                "domain": [
+                  2007,
+                  2010,
+                  2013,
+                  2016,
+                  2019,
+                  2022,
+                  2025
+                ]
+              }
+            },
+            "y": {
+              "field": "y",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  50
+                ]
+              }
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

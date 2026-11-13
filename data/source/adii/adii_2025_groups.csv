@@ -1,0 +1,26 @@
+measure,group,value,source_id,year,notes
+digital_exclusion_rate_pct,National average,20.6,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+digital_exclusion_rate_pct,Aged 75+,66.5,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+digital_exclusion_rate_pct,Lowest income households,63.0,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+digital_exclusion_rate_pct,Did not complete secondary school,54.5,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+digital_exclusion_rate_pct,Public housing residents,45.2,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+digital_exclusion_rate_pct,First Nations people,40.9,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+mobile_only_internet_pct,National average,9.7,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+mobile_only_internet_pct,Public housing residents,18.8,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+mobile_only_internet_pct,Did not complete secondary school,17.0,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+mobile_only_internet_pct,People with disability,14.3,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+mobile_only_internet_pct,Outside capital cities,12.4,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+uses_online_banking_pct,All Australians,95.3,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+uses_online_banking_pct,Did not complete secondary school,80.7,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+uses_online_government_services_pct,All Australians,92.1,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+uses_online_government_services_pct,Did not complete secondary school,77.3,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+uses_online_health_services_pct,All Australians,81.1,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+uses_online_health_services_pct,Did not complete secondary school,55.4,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+limits_internet_use_over_scam_concerns_pct,Aged 75+,24.4,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,National average,70.3,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,Public housing residents,44.3,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,Did not complete secondary school,54.6,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,Unemployed,56.6,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,People with disability,57.2,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,First Nations people,57.3,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.
+affordability_score,One parent family,62.6,S6,2025,ADII 2025 (data collected 2024). Affordability measure revised in 2025 and not comparable with earlier years. Scores are out of 100.

@@ -1,0 +1,232 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Outside the cities, bad connectivity interrupts digital payments",
+    "subtitle": "How often mobile or internet use is affected by interruptions (ADII 2025).",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 560,
+  "height": 210,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "labelFontSize": 12
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/source/adii/adii_2025_connectivity_issues_by_remoteness.csv",
+    "format": {
+      "parse": {
+        "year": "number"
+      }
+    }
+  },
+  "encoding": {
+    "y": {
+      "field": "remoteness",
+      "type": "nominal",
+      "title": null,
+      "scale": {
+        "domain": [
+          "Very remote",
+          "Remote",
+          "Outer regional",
+          "Inner regional",
+          "Major cities"
+        ]
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "stroke": "#ffffff",
+        "strokeWidth": 2,
+        "height": 26
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_people_pct",
+          "type": "quantitative",
+          "stack": "normalize",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              1
+            ]
+          }
+        },
+        "color": {
+          "field": "connectivity_issue_frequency",
+          "type": "nominal",
+          "title": "Frequency of interruptions",
+          "scale": {
+            "domain": [
+              "Always",
+              "Often",
+              "Sometimes",
+              "Rarely or never"
+            ],
+            "range": [
+              "#8a0e3c",
+              "#bd4a6d",
+              "#dc93a8",
+              "#f2ccd6"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "title": null,
+            "symbolType": "square",
+            "symbolSize": 90,
+            "rowPadding": 6
+          }
+        },
+        "order": {
+          "field": "connectivity_issue_frequency",
+          "type": "nominal",
+          "sort": [
+            "Always",
+            "Often",
+            "Sometimes",
+            "Rarely or never"
+          ]
+        },
+        "tooltip": [
+          {
+            "field": "remoteness",
+            "type": "nominal",
+            "title": "Remoteness"
+          },
+          {
+            "field": "connectivity_issue_frequency",
+            "type": "nominal",
+            "title": "Frequency"
+          },
+          {
+            "field": "share_of_people_pct",
+            "type": "quantitative",
+            "title": "Share of people (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.share_of_people_pct >= 8"
+        },
+        {
+          "calculate": "format(datum.share_of_people_pct, '.0f') + '%'",
+          "as": "share_label"
+        },
+        {
+          "filter": "!(datum.connectivity_issue_frequency == 'Rarely or never' || datum.connectivity_issue_frequency == 'Sometimes')"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_people_pct",
+          "type": "quantitative",
+          "stack": "normalize",
+          "axis": null
+        },
+        "order": {
+          "field": "connectivity_issue_frequency",
+          "type": "nominal",
+          "sort": [
+            "Always",
+            "Often",
+            "Sometimes",
+            "Rarely or never"
+          ]
+        },
+        "text": {
+          "field": "share_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.share_of_people_pct >= 8"
+        },
+        {
+          "calculate": "format(datum.share_of_people_pct, '.0f') + '%'",
+          "as": "share_label"
+        },
+        {
+          "filter": "(datum.connectivity_issue_frequency == 'Rarely or never' || datum.connectivity_issue_frequency == 'Sometimes')"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#12263A"
+      },
+      "encoding": {
+        "x": {
+          "field": "share_of_people_pct",
+          "type": "quantitative",
+          "stack": "normalize",
+          "axis": null
+        },
+        "order": {
+          "field": "connectivity_issue_frequency",
+          "type": "nominal",
+          "sort": [
+            "Always",
+            "Often",
+            "Sometimes",
+            "Rarely or never"
+          ]
+        },
+        "text": {
+          "field": "share_label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

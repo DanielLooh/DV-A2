@@ -1,0 +1,7 @@
+year,channel,share_of_card_payments_pct,value_type,notes,source_id
+2022,tap_device,31,exact,Stated: device-based payments 31% of card payments in 2022,S1
+2022,insert_card,5,approx,Stated as little changed at around 5%,S1
+2022,tap_card,62,derived,Derived: 2025 residual (55) plus the stated 7 percentage-point fall since 2022,S1
+2025,tap_device,40,approx,Stated: around 40% of card payments,S1
+2025,insert_card,5,approx,Stated: around 5%,S1
+2025,tap_card,55,derived,Derived residual (100-40-5); rounding means 2022-2025 change is about 7-9 points,S1

@@ -1,0 +1,200 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Every way of reaching a bank in person has shrunk — except Bank@Post",
+    "subtitle": "Count of services in each state, as an index where June 2017 = 100.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A"
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    },
+    "scale": {
+      "band": {
+        "innerPadding": 0.06,
+        "outerPadding": 0.06
+      }
+    }
+  },
+  "vconcat": [
+    {
+      "data": {
+        "url": "data/source/apra/apra_index_state_channel_2017_2026.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "calculate": "{'atm': 'ADIs’ ATMs', 'bank_post': 'Bank@Post', 'branch': 'Branches', 'other_face_to_face': 'Other face-to-face'}[datum.channel]",
+          "as": "channel_label"
+        }
+      ],
+      "facet": {
+        "column": {
+          "field": "channel_label",
+          "type": "nominal",
+          "sort": [
+            "Branches",
+            "Bank@Post",
+            "ADIs’ ATMs",
+            "Other face-to-face"
+          ],
+          "header": {
+            "title": null,
+            "labelFontSize": 12,
+            "labelFontWeight": 700,
+            "labelColor": "#12263A"
+          }
+        }
+      },
+      "spec": {
+        "width": 150,
+        "height": 190,
+        "encoding": {
+          "x": {
+            "field": "year",
+            "type": "ordinal",
+            "title": null,
+            "axis": {
+              "labelAngle": 0,
+              "labelFontSize": 9,
+              "values": [
+                2017,
+                2020,
+                2023,
+                2026
+              ],
+              "domain": false,
+              "ticks": false
+            }
+          },
+          "y": {
+            "field": "state",
+            "type": "nominal",
+            "sort": "ascending",
+            "title": null,
+            "axis": {
+              "labelFontSize": 10,
+              "domain": false,
+              "ticks": false
+            }
+          }
+        },
+        "layer": [
+          {
+            "mark": {
+              "type": "rect",
+              "stroke": "#ffffff",
+              "strokeWidth": 1
+            },
+            "encoding": {
+              "color": {
+                "field": "index_2017_eq_100",
+                "type": "quantitative",
+                "title": "Index (2017 = 100)",
+                "scale": {
+                  "domain": [
+                    20,
+                    180
+                  ],
+                  "range": [
+                    "#9c1043",
+                    "#e2e8ee",
+                    "#14548f"
+                  ]
+                },
+                "legend": {
+                  "orient": "bottom",
+                  "direction": "horizontal",
+                  "gradientLength": 240,
+                  "format": "d",
+                  "title": "Index (2017 = 100) — pink: decline, blue: growth"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "state",
+                  "type": "nominal",
+                  "title": "State"
+                },
+                {
+                  "field": "year",
+                  "type": "ordinal",
+                  "title": "Year"
+                },
+                {
+                  "field": "channel_label",
+                  "type": "nominal",
+                  "title": "Channel"
+                },
+                {
+                  "field": "count",
+                  "type": "quantitative",
+                  "title": "Number of outlets",
+                  "format": ","
+                },
+                {
+                  "field": "index_2017_eq_100",
+                  "type": "quantitative",
+                  "title": "Index (2017 = 100)",
+                  "format": ".1f"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Note: the fall in ADIs’ ATMs partly reflects banks selling ATMs to independent operators, not only closures."
+          }
+        ]
+      },
+      "width": 10,
+      "height": 26,
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "color": "#4C6074",
+        "align": "left",
+        "baseline": "top"
+      },
+      "encoding": {
+        "text": {
+          "field": "note",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

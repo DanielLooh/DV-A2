@@ -1,0 +1,865 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Scam losses vary by type; the domestic online-card fraud rate fell",
+    "subtitle": "Reported scam losses by type (top) and domestic card fraud rate (bottom).",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 12
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "vconcat": [
+    {
+      "title": {
+        "text": "Reported scam losses by type, $ million (log scale)",
+        "subtitle": "Total reported losses: about $2.0bn (2024) and $2.18bn (2025).",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#12263A",
+        "subtitleFontSize": 11,
+        "subtitleColor": "#4C6074"
+      },
+      "data": {
+        "url": "data/source/nasc/nasc_scam_losses_by_type.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "width": 520,
+      "height": 260,
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "scale": {
+            "domain": [
+              2024,
+              2025
+            ]
+          },
+          "axis": {
+            "labelAngle": 0,
+            "labelFontSize": 12,
+            "domain": false,
+            "ticks": false
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "title": null,
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              },
+              "axis": {
+                "values": [
+                  100,
+                  300,
+                  1000
+                ],
+                "grid": true,
+                "format": "d",
+                "labelFontSize": 10,
+                "domain": false,
+                "ticks": false
+              }
+            },
+            "color": {
+              "field": "scam_type",
+              "type": "nominal",
+              "title": null,
+              "scale": {
+                "domain": [
+                  "Investment",
+                  "Romance",
+                  "Payment redirection",
+                  "Remote access",
+                  "Phishing"
+                ],
+                "range": [
+                  "#2a78d6",
+                  "#eb6834",
+                  "#1baf7a",
+                  "#eda100",
+                  "#6250d6"
+                ]
+              },
+              "legend": {
+                "orient": "bottom",
+                "columns": 3,
+                "symbolSize": 60,
+                "title": null
+              }
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          },
+          "params": [
+            {
+              "name": "hover_c1_0",
+              "select": {
+                "type": "point",
+                "fields": [
+                  "scam_type"
+                ],
+                "on": "pointerover",
+                "clear": "pointerout"
+              }
+            }
+          ]
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 70,
+            "stroke": "#ffffff",
+            "strokeWidth": 1
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "color": {
+              "field": "scam_type",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Investment",
+                  "Romance",
+                  "Payment redirection",
+                  "Remote access",
+                  "Phishing"
+                ],
+                "range": [
+                  "#2a78d6",
+                  "#eb6834",
+                  "#1baf7a",
+                  "#eda100",
+                  "#6250d6"
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "scam_type",
+                "type": "nominal",
+                "title": "Scam type"
+              },
+              {
+                "field": "year",
+                "type": "ordinal",
+                "title": "Year"
+              },
+              {
+                "field": "reported_losses_million",
+                "type": "quantitative",
+                "title": "Reported losses ($m)",
+                "format": ",.0f"
+              }
+            ],
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2024"
+            },
+            {
+              "calculate": "datum.scam_type + '  $' + format(datum.reported_losses_million, '.0f') + 'm'",
+              "as": "left_label"
+            },
+            {
+              "filter": "!(datum.scam_type == 'Romance') && !(datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "right",
+            "dx": -10,
+            "dy": 0
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "left_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2024"
+            },
+            {
+              "calculate": "datum.scam_type + '  $' + format(datum.reported_losses_million, '.0f') + 'm'",
+              "as": "left_label"
+            },
+            {
+              "filter": "(datum.scam_type == 'Romance') && !(datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "right",
+            "dx": -10,
+            "dy": -8
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "left_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2024"
+            },
+            {
+              "calculate": "datum.scam_type + '  $' + format(datum.reported_losses_million, '.0f') + 'm'",
+              "as": "left_label"
+            },
+            {
+              "filter": "!(datum.scam_type == 'Romance') && (datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "right",
+            "dx": -10,
+            "dy": 8
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "left_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2024"
+            },
+            {
+              "calculate": "datum.scam_type + '  $' + format(datum.reported_losses_million, '.0f') + 'm'",
+              "as": "left_label"
+            },
+            {
+              "filter": "(datum.scam_type == 'Romance') && (datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "right",
+            "dx": -10,
+            "dy": -8
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "left_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2025"
+            },
+            {
+              "calculate": "'$' + format(datum.reported_losses_million, '.0f') + 'm  ' + datum.scam_type",
+              "as": "right_label"
+            },
+            {
+              "filter": "!(datum.scam_type == 'Romance') && !(datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "left",
+            "dx": 10,
+            "dy": 0
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "right_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2025"
+            },
+            {
+              "calculate": "'$' + format(datum.reported_losses_million, '.0f') + 'm  ' + datum.scam_type",
+              "as": "right_label"
+            },
+            {
+              "filter": "(datum.scam_type == 'Romance') && !(datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "left",
+            "dx": 10,
+            "dy": -6
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "right_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2025"
+            },
+            {
+              "calculate": "'$' + format(datum.reported_losses_million, '.0f') + 'm  ' + datum.scam_type",
+              "as": "right_label"
+            },
+            {
+              "filter": "!(datum.scam_type == 'Romance') && (datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "left",
+            "dx": 10,
+            "dy": 6
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "right_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.year == 2025"
+            },
+            {
+              "calculate": "'$' + format(datum.reported_losses_million, '.0f') + 'm  ' + datum.scam_type",
+              "as": "right_label"
+            },
+            {
+              "filter": "(datum.scam_type == 'Romance') && (datum.scam_type == 'Payment redirection')"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "left",
+            "dx": 10,
+            "dy": -6
+          },
+          "encoding": {
+            "y": {
+              "field": "reported_losses_million",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "right_label",
+              "type": "nominal"
+            },
+            "opacity": {
+              "condition": {
+                "param": "hover_c1_0",
+                "value": 1
+              },
+              "value": 0.2
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "year": "2025",
+                "y": 945,
+                "label": "2025 figure not yet published"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "color": "#4C6074",
+            "align": "left",
+            "dx": 10
+          },
+          "encoding": {
+            "y": {
+              "field": "y",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [
+                  60,
+                  1100
+                ]
+              }
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Domestic card fraud rate, cents per $1,000 spent",
+        "subtitle": "Card-not-present fraud. Published calendar years only.",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#12263A",
+        "subtitleFontSize": 11,
+        "subtitleColor": "#4C6074"
+      },
+      "data": {
+        "url": "data/source/auspaynet/auspaynet_card_fraud.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.measure == 'domestic_cnp_fraud_rate_cents_per_1000_spent'"
+        },
+        {
+          "calculate": "datum.value_type == 'approx' ? '~' + format(datum.value, '.0f') : format(datum.value, '.0f')",
+          "as": "rate_label"
+        }
+      ],
+      "width": 520,
+      "height": 130,
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "scale": {
+            "domain": [
+              2020,
+              2024,
+              2025
+            ]
+          },
+          "axis": {
+            "labelAngle": 0,
+            "labelFontSize": 12,
+            "domain": false,
+            "ticks": false
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "color": "#1c5cab",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "y": {
+              "field": "value",
+              "type": "quantitative",
+              "title": null,
+              "scale": {
+                "domain": [
+                  40,
+                  120
+                ]
+              },
+              "axis": {
+                "values": [
+                  50,
+                  75,
+                  100
+                ],
+                "grid": true,
+                "format": "d",
+                "labelFontSize": 10,
+                "domain": false,
+                "ticks": false
+              }
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 70,
+            "color": "#1c5cab",
+            "stroke": "#ffffff",
+            "strokeWidth": 1
+          },
+          "encoding": {
+            "y": {
+              "field": "value",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  40,
+                  120
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "year",
+                "type": "ordinal",
+                "title": "Year"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "title": "Cents per $1,000 spent",
+                "format": ".1f"
+              },
+              {
+                "field": "value_type",
+                "type": "nominal",
+                "title": "Figure type"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "center",
+            "dy": -10
+          },
+          "encoding": {
+            "y": {
+              "field": "value",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  40,
+                  120
+                ]
+              }
+            },
+            "text": {
+              "field": "rate_label",
+              "type": "nominal"
+            }
+          },
+          "transform": [
+            {
+              "filter": "!(datum.year == 2024)"
+            }
+          ]
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#12263A",
+            "align": "center",
+            "dy": 15
+          },
+          "encoding": {
+            "y": {
+              "field": "value",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  40,
+                  120
+                ]
+              }
+            },
+            "text": {
+              "field": "rate_label",
+              "type": "nominal"
+            }
+          },
+          "transform": [
+            {
+              "filter": "(datum.year == 2024)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Combined reported losses only; 2025 investment figure not yet published."
+          }
+        ]
+      },
+      "width": 10,
+      "height": 24,
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 11,
+        "color": "#4C6074",
+        "align": "left",
+        "baseline": "top"
+      },
+      "encoding": {
+        "text": {
+          "field": "note",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

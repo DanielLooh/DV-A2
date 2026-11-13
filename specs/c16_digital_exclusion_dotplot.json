@@ -1,0 +1,256 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Who is left behind when payments go digital",
+    "subtitle": "Share of each group who are highly digitally excluded (ADII 2025).",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 480,
+  "height": 230,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD",
+      "labelFontSize": 12
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/source/adii/adii_2025_groups.csv",
+    "format": {
+      "parse": {
+        "year": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.measure == 'digital_exclusion_rate_pct'"
+    },
+    {
+      "filter": "datum.group != 'National average'"
+    },
+    {
+      "calculate": "format(datum.value, '.1f') + '%'",
+      "as": "value_label"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "group",
+      "type": "nominal",
+      "title": null,
+      "sort": {
+        "field": "value",
+        "op": "min",
+        "order": "descending"
+      },
+      "axis": {
+        "domain": false,
+        "ticks": false,
+        "labelFontSize": 12
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#C9D4DD",
+        "size": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Highly digitally excluded (%)",
+          "scale": {
+            "domain": [
+              0,
+              75
+            ]
+          },
+          "axis": {
+            "grid": true,
+            "format": "d",
+            "values": [
+              0,
+              25,
+              50,
+              75
+            ],
+            "labelFontSize": 11
+          }
+        },
+        "x2": {
+          "value": 0
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 130,
+        "color": "#9C1043",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              75
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "group",
+            "type": "nominal",
+            "title": "Group"
+          },
+          {
+            "field": "value",
+            "type": "quantitative",
+            "title": "Highly digitally excluded (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "notes",
+            "type": "nominal",
+            "title": null
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#12263A",
+        "align": "left",
+        "dx": 10
+      },
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              75
+            ]
+          }
+        },
+        "text": {
+          "field": "value_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 20.6,
+            "label": "National average: 20.6%"
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#4C6074",
+        "strokeWidth": 1.5,
+        "strokeDash": [
+          5,
+          4
+        ]
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              75
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 20.6,
+            "group": "First Nations people",
+            "label": "National average: 20.6%"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#4C6074",
+        "align": "right",
+        "dx": -8,
+        "dy": -13
+      },
+      "encoding": {
+        "y": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Aged 75+",
+              "Lowest income households",
+              "Did not complete secondary school",
+              "Public housing residents",
+              "First Nations people"
+            ]
+          }
+        },
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              75
+            ]
+          }
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

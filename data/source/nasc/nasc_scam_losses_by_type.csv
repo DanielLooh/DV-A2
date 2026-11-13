@@ -1,0 +1,11 @@
+year,scam_type,reported_losses_million,source_id,notes
+2024,Investment,945.0,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2024,Romance,156.8,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2024,Payment redirection,152.6,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2024,Remote access,106.0,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2024,Phishing,84.5,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2025,Payment redirection,166.8,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2025,Romance,139.9,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2025,Phishing,97.6,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2025,Remote access,69.9,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."
+2025,Investment,,S10,"Combined data (Scamwatch, ReportCyber, AFCX, IDCARE, ASIC). 2025 investment figure not retrieved; blank, not zero."

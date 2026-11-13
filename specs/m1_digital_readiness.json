@@ -1,0 +1,202 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Digital inclusion score by state, 2025",
+    "subtitle": "ADII overall score, 0–100. Collected 2024, published 2025.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 600,
+  "height": 520,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "projection": {
+    "type": "albers",
+    "rotate": [
+      -132,
+      0,
+      0
+    ],
+    "center": [
+      0,
+      -27
+    ],
+    "parallels": [
+      -18,
+      -36
+    ],
+    "scale": 860,
+    "translate": [
+      300.0,
+      255.0
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/geography/au_states.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.STATE_NAME",
+          "from": {
+            "data": {
+              "url": "data/derived/state_labels.csv"
+            },
+            "key": "state_name",
+            "fields": [
+              "state",
+              "lon",
+              "lat",
+              "adii_index",
+              "access",
+              "affordability",
+              "digital_ability",
+              "lbl_adii",
+              "txt_adii"
+            ]
+          }
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "color": {
+          "field": "adii_index",
+          "type": "quantitative",
+          "title": "Digital inclusion score (0–100)",
+          "scale": {
+            "range": [
+              "#e3f0f7",
+              "#6fa8c9",
+              "#12466b"
+            ],
+            "domain": [
+              69,
+              80
+            ],
+            "clamp": true
+          },
+          "legend": {
+            "orient": "bottom-left",
+            "direction": "horizontal",
+            "gradientLength": 200,
+            "offset": -4
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "adii_index",
+            "type": "quantitative",
+            "title": "Overall score",
+            "format": ".1f"
+          },
+          {
+            "field": "access",
+            "type": "quantitative",
+            "title": "Access",
+            "format": ".1f"
+          },
+          {
+            "field": "affordability",
+            "type": "quantitative",
+            "title": "Affordability",
+            "format": ".1f"
+          },
+          {
+            "field": "digital_ability",
+            "type": "quantitative",
+            "title": "Digital ability",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/derived/state_labels.csv"
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "font": "Public Sans"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "lbl_adii",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "txt_adii",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "dark",
+              "light"
+            ],
+            "range": [
+              "#12263A",
+              "#ffffff"
+            ]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "data": {
+        "values": []
+      },
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#12466b",
+        "x": 300,
+        "y": 402,
+        "text": "National average: 73.6"
+      }
+    }
+  ]
+}

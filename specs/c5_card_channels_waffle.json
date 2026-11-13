@@ -1,0 +1,264 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Tapping a phone or watch now leads in-person card payments",
+    "subtitle": "Each square is 1% of in-person card payments.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "vconcat": [
+    {
+      "data": {
+        "url": "data/derived/c5_waffle.csv",
+        "format": {
+          "parse": {
+            "year": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.channel == 'tap_device' ? 'Tap phone or watch' : datum.channel == 'tap_card' ? 'Tap a card' : 'Insert a card'",
+          "as": "channel_label"
+        }
+      ],
+      "facet": {
+        "column": {
+          "field": "year",
+          "type": "ordinal",
+          "header": {
+            "title": null,
+            "labelFontSize": 14,
+            "labelFontWeight": 700,
+            "labelColor": "#12263A"
+          }
+        }
+      },
+      "spec": {
+        "width": 230,
+        "height": 230,
+        "encoding": {
+          "x": {
+            "field": "col",
+            "type": "ordinal",
+            "scale": {
+              "range": [
+                11,
+                219
+              ]
+            },
+            "axis": null
+          },
+          "y": {
+            "field": "row",
+            "type": "ordinal",
+            "scale": {
+              "range": [
+                11,
+                219
+              ]
+            },
+            "axis": null
+          }
+        },
+        "layer": [
+          {
+            "mark": {
+              "type": "rect",
+              "stroke": "#ffffff",
+              "strokeWidth": 2,
+              "cornerRadius": 2
+            },
+            "encoding": {
+              "color": {
+                "field": "channel_label",
+                "type": "nominal",
+                "title": "How the card payment was made",
+                "scale": {
+                  "domain": [
+                    "Tap phone or watch",
+                    "Tap a card",
+                    "Insert a card"
+                  ],
+                  "range": [
+                    "#B01250",
+                    "#3D7BC4",
+                    "#C28102"
+                  ]
+                },
+                "legend": {
+                  "orient": "bottom",
+                  "direction": "horizontal",
+                  "title": null,
+                  "symbolType": "square"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "year",
+                  "type": "ordinal",
+                  "title": "Survey year"
+                },
+                {
+                  "field": "channel_label",
+                  "type": "nominal",
+                  "title": "Channel"
+                },
+                {
+                  "field": "share_label",
+                  "type": "nominal",
+                  "title": "Stated share (RBA)"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "title": {
+        "text": "October 2024, bank data: 44% of in-person card transactions",
+        "anchor": "start",
+        "fontSize": 13,
+        "fontWeight": 400,
+        "color": "#4C6074",
+        "dy": -4
+      },
+      "data": {
+        "url": "data/source/rba/rps_mobile_wallet_oct2024.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.group == 'device_present_transactions'"
+        },
+        {
+          "calculate": "datum.measure == 'mobile_wallet' ? 'Tap phone or watch' : datum.measure == 'contactless_card' ? 'Tap a card' : 'Insert a card'",
+          "as": "channel_label"
+        },
+        {
+          "calculate": "format(datum.value, 'd') + '%'",
+          "as": "pct_label"
+        }
+      ],
+      "width": 460,
+      "height": 36,
+      "encoding": {
+        "y": {
+          "field": "period",
+          "type": "nominal",
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "stroke": "#ffffff",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "x": {
+              "field": "value",
+              "type": "quantitative",
+              "stack": "normalize",
+              "axis": {
+                "title": null,
+                "format": "%",
+                "grid": false,
+                "tickCount": 3
+              },
+              "scale": {
+                "domain": [
+                  0,
+                  1
+                ]
+              }
+            },
+            "color": {
+              "field": "channel_label",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Tap phone or watch",
+                  "Tap a card",
+                  "Insert a card"
+                ],
+                "range": [
+                  "#B01250",
+                  "#3D7BC4",
+                  "#C28102"
+                ]
+              },
+              "legend": null
+            },
+            "tooltip": [
+              {
+                "field": "channel_label",
+                "type": "nominal",
+                "title": "Channel"
+              },
+              {
+                "field": "pct_label",
+                "type": "nominal",
+                "title": "Share of in-person card transactions"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.value >= 10"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "font": "Public Sans",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "color": "#ffffff",
+            "align": "center",
+            "baseline": "middle"
+          },
+          "encoding": {
+            "x": {
+              "field": "value",
+              "type": "quantitative",
+              "stack": "normalize"
+            },
+            "text": {
+              "field": "pct_label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resolve": {
+    "legend": {
+      "color": "independent"
+    }
+  }
+}

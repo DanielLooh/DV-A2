@@ -1,0 +1,18 @@
+file,item,issue,handling
+cash_use_2025.csv,Share of over-65s paying entirely in cash,RBA April 2026 text says about 10%; its chart description says about 25%,Excluded from data. Verify with RBA underlying data.
+cash_use_2025.csv,Convenient access to cash withdrawal,Text says about 75%; chart description says about 78%,"Stored as 75, flagged conflicting."
+auspaynet_card_fraud.csv,"2025 total card fraud $673m, down 14%",Implied 2024 base is about $780m but 2024 report gave $913m (a 26% fall). Trade-press source.,Flagged conflicting. Confirm in AusPayNet 2026 report.
+(excluded),Registered PayIDs,"Reported as 25m (Apr 2026), 27m (mid-2025) and 34m (Dec 2025) by different sources",Excluded. Get figure from Australian Payments Plus.
+(excluded),BNPL usage,2025 CPS dropped BNPL questions; only commercial surveys and market reports found,Excluded. Look for ASIC or RBA data.
+rps_growth_sep2026.csv,Column mapping of RBA summary tables,"Table layout read from search extracts (level, monthly growth, year-ended growth for two months)",Verify against the RBA Sept 2026 release.
+rps_levels_selected_months.csv,Irregular months,"Only releases retrieved are included, so the series is uneven",Do not draw as a continuous time series without downloading RBA tables C1 to C6.
+cash_use_2025.csv; cps_*,Values marked approx,"Taken from rounded figures in RBA text or chart descriptions, not chart data points",Replace with RBA underlying data (bulletin-2026-05--03.xlsx and bulletin-2026-04--01.xlsx) when available.
+cps_*,Survey precision,"About 1,200 respondents; no confidence intervals published in the bulletin text",Add a plain-language caution on the page.
+apra_index_state_channel_2017_2026.csv,Fall in ADI-operated ATMs of 50-74%,RBA says part reflects banks selling ATM fleets to independent operators,Do not present as lost ATMs overall.
+state_profile_adii_apra.csv,No per-capita measures,APRA Table 2 population covers only SA2s with services (about 22.2m of Australia); 30 SA2s have inconsistent population,Add ABS population before per-capita analysis.
+apra_branch_points_2017_2026.csv,"Totals 5,690 and 3,106","APRA totals are 5,694 and 3,108; some locations lack coordinates",Note on page.
+(excluded),APRA EFTPOS channel,"Definition not confirmed (state-level counts only, no locations)",Excluded from index files.
+(gap),Payment method by state or region,No public dataset found,Keep regional story to cash access and digital readiness; ask tutor.
+(gap),ADII LGA-level data,Only state and remoteness values are in the PDF,Download from ADII dashboards for finer maps.
+policy_timeline_2018_2029.csv,BNPL licensing date (10 Jun 2025),Secondary source only,Confirm against ASIC.
+(excluded),Interchange cap change (credit 0.8% to 0.3%),"From a bank article, not RBA",Confirm in RBA conclusions paper before using.

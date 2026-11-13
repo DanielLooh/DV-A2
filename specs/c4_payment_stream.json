@@ -1,0 +1,267 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Cash gives way to cards, with a small rebound after 2022",
+    "subtitle": "Band thickness shows share; rounded source figures rescaled to 100%.",
+    "anchor": "start",
+    "fontSize": 15,
+    "fontWeight": 600,
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4C6074",
+    "color": "#12263A"
+  },
+  "width": 600,
+  "height": 400,
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Public Sans",
+    "axis": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "gridColor": "#E2E8EE",
+      "domainColor": "#C9D4DD",
+      "tickColor": "#C9D4DD"
+    },
+    "legend": {
+      "labelFont": "Public Sans",
+      "titleFont": "Public Sans",
+      "labelColor": "#12263A",
+      "titleColor": "#12263A",
+      "titleFontWeight": 600
+    },
+    "title": {
+      "font": "Public Sans",
+      "color": "#12263A"
+    }
+  },
+  "data": {
+    "url": "data/source/rba/cps_payment_methods_2007_2025.csv",
+    "format": {
+      "parse": {
+        "year": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "calculate": "datum.method == 'cash' ? 'Cash' : datum.method == 'debit_card' ? 'Debit card' : datum.method == 'credit_charge_card' ? 'Credit card' : (datum.method == 'bpay' || datum.method == 'internet_phone_banking') ? 'Bank transfer' : 'Other'",
+      "as": "method5"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "share_of_payments_pct",
+          "as": "share"
+        }
+      ],
+      "groupby": [
+        "year",
+        "method5"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "share",
+          "as": "year_total"
+        }
+      ],
+      "groupby": [
+        "year"
+      ]
+    },
+    {
+      "calculate": "datum.share / datum.year_total * 100",
+      "as": "pct"
+    },
+    {
+      "calculate": "{'Cash':0,'Debit card':1,'Credit card':2,'Bank transfer':3,'Other':4}[datum.method5]",
+      "as": "method_order"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "scale": {
+        "domain": [
+          2007,
+          2010,
+          2013,
+          2016,
+          2019,
+          2022,
+          2025
+        ]
+      },
+      "axis": {
+        "labelAngle": 0
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "y": {
+          "field": "pct",
+          "type": "quantitative",
+          "stack": "center",
+          "title": null,
+          "axis": null
+        },
+        "color": {
+          "field": "method5",
+          "type": "nominal",
+          "title": "Payment method",
+          "scale": {
+            "domain": [
+              "Cash",
+              "Debit card",
+              "Credit card",
+              "Bank transfer",
+              "Other"
+            ],
+            "range": [
+              "#C28102",
+              "#0E9488",
+              "#B01250",
+              "#3D7BC4",
+              "#3E8E41"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "title": null
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "method5",
+            "type": "nominal",
+            "title": "Method"
+          },
+          {
+            "field": "pct",
+            "type": "quantitative",
+            "title": "Share of payments",
+            "format": ".1f"
+          }
+        ],
+        "order": {
+          "field": "method_order",
+          "type": "quantitative",
+          "sort": "ascending"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.method5 == 'Cash'"
+        },
+        {
+          "calculate": "datum.pct / 2",
+          "as": "y_ann"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "color": "#7a5310",
+        "size": 40
+      },
+      "encoding": {
+        "y": {
+          "field": "y_ann",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Cash share (%)",
+            "format": "d"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "year": 2007,
+            "y": 35,
+            "label": "Cash: 69%"
+          },
+          {
+            "year": 2022,
+            "y": 7,
+            "label": "13%"
+          },
+          {
+            "year": 2025,
+            "y": 7.5,
+            "label": "15%"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Public Sans",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#12263A",
+        "align": "center",
+        "baseline": "middle"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "scale": {
+            "domain": [
+              2007,
+              2010,
+              2013,
+              2016,
+              2019,
+              2022,
+              2025
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}
